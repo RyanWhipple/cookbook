@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <article class="media content-section">
+        <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + recipe.author.image_file) }}">
+        <div class="media-body">
+            <div class="article-metadata">
+                <a class="mr-2" href="{{url_for('users.user_recipes', username=recipe.author.username) }}">{{ recipe.author.username }}</a>
+                <small class="text-muted">{{ recipe.date_posted.strftime('%Y-%m-%d') }}</small>
+                {% if recipe.author == current_user %}
+                    <div>
+                        <a class="btn btn-secondary btn-sm m-1" href="{{ url_for('recipes.update_recipe', recipe_id=recipe.id) }}">Update</a>
+                        <button type="button" class="btn btn-danger btn-sm m-1" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+                    </div>
+                {% endif %}
+            </div>
+            <h2 class="article-title">{{ recipe.title }}</h2>
+            <p class="article-content">{{ recipe.content }}</p>
+        </div>
+    </article>
+
+    <!-- Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Delete Recipe?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <!-- <div class="modal-body">
+                    ...
+                </div> -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <form action="{{ url_for('recipes.delete_recipe', recipe_id=recipe.id) }}" method="POST">
+                        <input class="btn btn-danger" type="submit" value="Delete">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

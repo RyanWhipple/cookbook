@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    
+    
+    <div class="album py-5 bg-light">
+        <div class="container">
+    
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            
+                {% for recipe in recipes.items %}
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <!-- <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+                            <title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="#55595c"></rect>
+                            <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
+                        </svg> -->
+
+                        <img class="" src="{{ url_for('static', filename='profile_pics/' + recipe.image_file) }}" style="width:100%; object-fit: cover;">
+            
+                        <div class="card-body">
+                        <p class="card-text">{{ recipe.short_description }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a class="btn btn-sm btn-outline-secondary" href="{{url_for('recipes.recipe', recipe_id=recipe.id) }}">View</a>
+                                <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('recipes.update_recipe', recipe_id=recipe.id) }}">Edit</a>
+                            </div>
+                            <small class="text-muted">9 mins</small>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+
+
+
+
+
+
