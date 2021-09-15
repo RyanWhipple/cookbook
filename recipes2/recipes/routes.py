@@ -70,5 +70,5 @@ def delete_recipe(recipe_id):
         abort(403)
     db.session.delete(recipe)
     db.session.commit()
-    flash('Youre recipe has been deleted!', 'success')
+    flash('Your recipe has been deleted!', 'success')
     return redirect(url_for('main.home'))

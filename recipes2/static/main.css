@@ -92,3 +92,13 @@ body {
     font-size: 3.5rem;
   }
 }
+
+.card {
+  height: 425px;
+}
+
+.card img {
+  width:  100%;
+  object-fit: cover;
+  height: 300px;
+}
