@@ -33,10 +33,12 @@ class LoginForm(FlaskForm):
 
 
 class UpdateAccountForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'jpeg', 'png'])])
-    submit = SubmitField('Update')
+    first_name  = StringField('First Name', validators=[DataRequired(), Length(min=2, max=20)])
+    last_name   = StringField('Last Name', validators=[DataRequired(), Length(min=2, max=20)])
+    username    = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
+    email       = StringField('Email', validators=[DataRequired(), Email()])
+    picture     = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'jpeg', 'png'])])
+    submit      = SubmitField('Update')
 
     def validate_username(self, username):
         if username.data != current_user.username:

@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    <div class="content-section">
+    <div class="container bg-secondary rounded-3 py-3">
         <form method="POST" action="">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
@@ -37,18 +37,19 @@
                     {{ form.remember.label(class="form-check-label") }}
                 </div>
             </fieldset>
-            <div class="form-group pt-3">
+            <div class="form-group pt-3 mb-3">
                 {{ form.submit(class="btn btn-outline-info") }}
                 <small class="text-muted ml-2">
                     <a href="{{ url_for('users.reset_request') }}">Forgot Password?</a>
                 </small>
             </div>
         </form>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                Need An Account? <a class="ml-2" href="{{ url_for('users.register') }}">Sign Up Now</a>
+            </small>
+        </div>
     </div>
-    <div class="border-top pt-3">
-        <small class="text-muted">
-            Need An Account? <a class="ml-2" href="{{ url_for('users.register') }}">Sign Up Now</a>
-        </small>
-    </div>
+
 
 {% endblock content %}
