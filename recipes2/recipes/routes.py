@@ -19,7 +19,13 @@ def new_recipe():
         picture_file = save_picture(form.picture.data)
         print("picture_file: ", picture_file)
         
-        recipe = Recipe(title=form.title.data, short_description=form.short_description.data, image_file=picture_file, content=form.content.data, author=current_user)
+        recipe = Recipe(title               = form.title.data,
+                        short_description   = form.short_description.data,
+                        image_file          = picture_file,
+                        ingredients         = form.ingredients.data,
+                        directions          = form.directions.data,
+                        notes               = form.notes.data,
+                        author              = current_user)
         db.session.add(recipe)
         db.session.commit()
         flash('Your recipe has been created!','success')

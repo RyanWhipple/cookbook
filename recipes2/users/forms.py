@@ -6,11 +6,13 @@ from flask_login import current_user
 from recipes2.models import User
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    first_name      = StringField('First Name', validators=[DataRequired(), Length(min=2, max=20)])
+    last_name       = StringField('Last Name', validators=[DataRequired(), Length(min=2, max=20)])
+    username        = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
+    email           = StringField('Email', validators=[DataRequired(), Email()])
+    password        = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Sign Up')
+    submit          = SubmitField('Sign Up')
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()

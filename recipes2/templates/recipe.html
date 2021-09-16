@@ -3,25 +3,13 @@
 {% block content %}
 
     <div class="container bg-secondary rounded-3 py-3">
-        <!-- Title and Short Description -->
-        <div class="row mb-3 gx-3">
-            <div class="col">
-                <div class="border rounded-3 p-3 bg-light">
+        <!-- First Row: Description and Image -->
+        <div class="row mb-3 gx-3 row-eq-height">
+            <div class="col-6">
+                <div class="border rounded-3 p-3 bg-light h-100">
                     <h1>{{ recipe.title }}</h1>
                     <p class="mb-1"><i>{{ recipe.short_description }}</i></p>
-                </div>
-            </div>
-        </div>
-        <div class="row mb-3 gx-3">
-            <!-- Recipe Image -->
-            <div class="col">
-                <div class="border rounded-3 p-3 bg-light">
-                    <img src="{{url_for('static', filename='profile_pics/' + recipe.image_file) }}" class="w-100">
-                </div>
-            </div>
-            <!-- Contributed By -->
-            <div class="col col-4">
-                <div class="border rounded-3 p-3 bg-light">
+                    <hr>
                     <h5>Contributed by:</h5>
                     <div class="row">
                         <div class="col-2">
@@ -33,55 +21,48 @@
                             <small class="text-muted">{{ recipe.date_posted.strftime('%Y-%m-%d') }}</small>
                         </div>
                     </div>
-                    <div class="row">
-                        <!-- Update and Delete -->
-                        {% if recipe.author == current_user %}
-                            <div>
-                                <a class="btn btn-secondary btn-sm m-1" href="{{ url_for('recipes.update_recipe', recipe_id=recipe.id) }}">Update</a>
-                                <button type="button" class="btn btn-danger btn-sm m-1" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
-                            </div>
-                        {% endif %}
-                    </div>
+                    <!-- Update and Delete -->
+                    {% if recipe.author == current_user %}
+                        <div>
+                            <a class="btn btn-secondary btn-sm m-1" href="{{ url_for('recipes.update_recipe', recipe_id=recipe.id) }}">Update</a>
+                            <button type="button" class="btn btn-danger btn-sm m-1" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
-        </div>
-        <div class="row mb-3 gx-3">
-            <!-- Tips -->
-            <div class="col">
+            <!-- Recipe Image -->
+            <div class="col-6">
                 <div class="border rounded-3 p-3 bg-light">
-                    <h2>Tips</h2>
-                    <hr>
-                    <p>Things to think about when cooking this recipe, like:</p>
-                    <p>-Cuts of meat to consider</p>
-                    <p>-Recommendations for pre-made alternatives to certain ingredients</p>
+                    <img src="{{url_for('static', filename='profile_pics/' + recipe.image_file) }}" class="w-100">
                 </div>
             </div>
         </div>
-        <div class="row mb-3 gx-3">
+        <!-- Second Row: Ingredients and Directions -->
+        <div class="row mb-3 gx-3 row-eq-height">
             <!-- List of Ingredients -->
             <div class="col col-3">
-                <div class="border rounded-3 p-3 bg-light">
+                <div class="border rounded-3 p-3 bg-light h-100">
                     <h2>List of Ingredients</h2>
                     <hr>
-                    <h4>Tacos:</h4>
-                    <ul>
-                        <li>1 lb ground beef</li>
-                        <li>Taco seasoning</li>
-                    </ul>
-                    <h4>Toppings:</h4>
-                    <ul>
-                        <li>Cheese</li>
-                        <li>Lettuce</li>
-                        <li>Tomato</li>
-                    </ul>
+                    {{ recipe.ingredients }}
                 </div>
             </div>
             <!-- Recipe Steps -->
             <div class="col col-9">
-                <div class="border rounded-3 p-3 bg-light">
+                <div class="border rounded-3 p-3 bg-light h-100">
                     <h2>Recipe Steps</h2>
                     <hr>
-                    {{ recipe.content }}
+                    {{ recipe.directions }}
+                </div>
+            </div>
+        </div>
+        <!-- Third Row: Tips -->
+        <div class="row mb-3 gx-3">
+            <div class="col">
+                <div class="border rounded-3 p-3 bg-light">
+                    <h2>Tips</h2>
+                    <hr>
+                    {{ recipe.notes }}
                 </div>
             </div>
         </div>
