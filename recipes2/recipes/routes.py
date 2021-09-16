@@ -30,13 +30,7 @@ def new_recipe():
         db.session.commit()
         flash('Your recipe has been created!','success')
         return redirect(url_for('main.home'))
-    return render_template('create_recipe.html', title='New Recipe', form=form, legend='New Recipe')
-
-
-@recipes.route('/recipe/<int:recipe_id>', methods=['GET', 'POST'])
-def recipe(recipe_id):
-    recipe = Recipe.query.get_or_404(recipe_id)
-    return render_template('recipe.html', title=recipe.title, recipe=recipe)
+    return render_template('recipe_create_update.html', title='New Recipe', form=form, legend='New Recipe')
 
 
 @recipes.route('/recipe/<int:recipe_id>/update', methods=['GET', 'POST'])
@@ -57,15 +51,21 @@ def update_recipe(recipe_id):
         print("picture_file: ", picture_file)
         recipe.image_file = picture_file
         
-        recipe.content = form.content.data
+        recipe.directions = form.directions.data
         db.session.commit()
         flash('Your recipe has been updated!', 'success')
         return redirect(url_for('recipes.recipe', recipe_id=recipe.id))
     elif request.method == 'GET':
         form.title.data = recipe.title
         form.short_description.data = recipe.short_description
-        form.content.data = recipe.content
-    return render_template('create_recipe.html', title='Update Recipe', form=form, legend='Update Recipe')
+        form.directions.data = recipe.directions
+    return render_template('recipe_create_update.html', title='Update Recipe', form=form, legend='Update Recipe')
+
+
+@recipes.route('/recipe/<int:recipe_id>', methods=['GET', 'POST'])
+def recipe(recipe_id):
+    recipe = Recipe.query.get_or_404(recipe_id)
+    return render_template('recipe_read.html', title=recipe.title, recipe=recipe)
 
 
 @recipes.route('/recipe/<int:recipe_id>/delete', methods=['POST'])

@@ -1,0 +1,155 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="container bg-secondary rounded-3 py-3">
+    <form method="POST" action="" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <!-- First Row: Description and Image -->
+            <div class="row mb-3 gx-3 row-eq-height">
+                <div class="col-6">
+                    <div class="border rounded-3 p-3 bg-light h-100">
+                        <!-- Recipe Title -->
+                        <div class="form-group mb-2">
+                            <!-- {# form.title.label(class="form-control-label") #} -->
+                            {% if form.title.errors %}
+                                {{ form.title(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.title.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                    {{ form.title(class="form-control form-control-lg") }}
+                            {% endif %}
+                        </div>
+                        <!-- Recipe Short Description -->
+                        <div class="form-group">
+                            <!-- {# form.short_description.label(class="form-control-label") #} -->
+                            {% if form.short_description.errors %}
+                                {{ form.short_description(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.short_description.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                    {{ form.short_description(class="form-control form-control-lg") }}
+                            {% endif %}
+                        </div>
+                        <hr>
+                        <h5>Contributed by:</h5>
+                        <div class="row">
+                            <div class="col-2">
+                                <!-- <img class="rounded-circle article-img" src="{# url_for('static', filename='profile_pics/' + recipe.author.image_file) #}"> -->
+                                Author Image Will Go Here
+                            </div>
+                            <div class="col-10">
+                                <!-- <a class="mr-2" href="{#url_for('users.user_recipes', username=recipe.author.username) #}">{# recipe.author.username #}</a> -->
+                                Author Name Will Go Here
+                                <br>
+                                <!-- <small class="text-muted">{# recipe.date_posted.strftime('%Y-%m-%d') #}</small> -->
+                                Recipe Timestamp Will Go Here
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Recipe Image -->
+                <div class="col-6">
+                    <div class="border rounded-3 p-3 bg-light h-100">
+                        <!-- <img src="{#url_for('static', filename='profile_pics/' + recipe.image_file) #}" class="w-100"> -->
+                        Existing Recipe Image Will Go Here
+                        <!-- Recipe Image -->
+                        <div class="form-group">
+                            <!-- {# form.picture.label(class="form-control-label") #}<br> -->
+                            {{ form.picture(class="form-control-file")}}
+                            {% if form.picture.errors %}
+                                {% for error in form.picture.errors %}
+                                    <span class="text-danger">{{ error }}</span><br>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Second Row: Ingredients and Directions -->
+            <div class="row mb-3 gx-3 row-eq-height">
+                <!-- List of Ingredients -->
+                <div class="col col-3">
+                    <div class="border rounded-3 p-3 bg-light h-100">
+                        <h2>List of Ingredients</h2>
+                        <hr>
+                        <!-- Recipe Ingredients -->
+                        <div class="form-group">
+                            <!-- {# form.ingredients.label(class="form-control-label") #} -->
+                            {% if form.ingredients.errors %}
+                                {{ form.ingredients(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.ingredients.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                    {{ form.ingredients(class="form-control form-control-lg") }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <!-- Recipe Directions -->
+                <div class="col col-9">
+                    <div class="border rounded-3 p-3 bg-light h-100">
+                        <h2>Recipe Directions</h2>
+                        <hr>
+                        <div class="form-group">
+                            <!-- {# form.directions.label(class="form-control-label") #} -->
+                            {% if form.directions.errors %}
+                                {{ form.directions(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.directions.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                    {{ form.directions(class="form-control form-control-lg") }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Third Row: Notes -->
+            <div class="row mb-3 gx-3">
+                <div class="col">
+                    <div class="border rounded-3 p-3 bg-light">
+                        <h2>Notes</h2>
+                        <hr>
+                        <!-- Recipe Notes -->
+                        <div class="form-group">
+                            <!-- {# form.notes.label(class="form-control-label") #} -->
+                            {% if form.notes.errors %}
+                                {{ form.notes(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.notes.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                    {{ form.notes(class="form-control form-control-lg") }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <!-- Fourth Row: Submit Button -->
+        <div class="row mb-3 gx-3">
+            <div class="col">
+                <div class="border rounded-3 p-3 bg-light d-flex justify-content-center">
+                    {{ form.submit(class="btn btn-primary") }}
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}
