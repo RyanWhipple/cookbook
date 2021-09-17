@@ -18,7 +18,9 @@
                             <div class="d-flex justify-content-between align-items-center w-100">
                                 <div class="btn-group">
                                     <a class="btn btn-sm btn-outline-secondary" href="{{url_for('recipes.recipe', recipe_id=recipe.id) }}">View</a>
-                                    <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('recipes.update_recipe', recipe_id=recipe.id) }}">Edit</a>
+                                    {% if recipe.author == current_user %}
+                                        <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('recipes.update_recipe', recipe_id=recipe.id) }}">Edit</a>
+                                    {% endif %}
                                 </div>
                                 <small class="text-muted">9 mins</small>
                             </div>
