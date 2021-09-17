@@ -2,9 +2,9 @@ from flask import Blueprint
 from flask import render_template, url_for, flash, redirect, request, abort
 from flask_login import current_user, login_required
 from recipes2 import db
-from recipes2.models import Recipe
-from recipes2.recipes.forms import RecipeForm
-from recipes2.users.utils import save_picture
+from recipes2.models.recipe import Recipe
+from recipes2.forms.recipe_forms import RecipeForm
+from recipes2.utils.utils import save_picture
 
 recipes = Blueprint('recipes', __name__)
 
