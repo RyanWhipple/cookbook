@@ -2,9 +2,10 @@ from flask import Blueprint
 from flask import render_template, url_for, flash, redirect, request
 from flask_login import login_user, current_user, logout_user, login_required
 from recipes2 import db, bcrypt
-from recipes2.models import User, Recipe
-from recipes2.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm
-from recipes2.users.utils import save_picture, send_reset_email
+from recipes2.models.user import User
+from recipes2.models.recipe import Recipe
+from recipes2.forms.user_forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm
+from recipes2.utils.utils import save_picture, send_reset_email
 
 
 users = Blueprint('users', __name__)
@@ -20,7 +21,7 @@ def register():
         user = User(username=form.username.data, email=form.email.data, password=hashed_password)
         db.session.add(user)
         db.session.commit()
-        flash(f'Your account has been created!  You are now able to log in', 'success')
+        flash(f'Your account has been created!', 'success')
         return redirect(url_for('users.login'))
     return render_template('register.html', title='Register', form=form)
 

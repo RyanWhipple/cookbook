@@ -1,13 +1,12 @@
-from datetime import datetime
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from recipes2 import db, login_manager
-from flask import app
-# from flask import current_app
 from flask_login import UserMixin
+from flask import app
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
 
 
 class User(db.Model, UserMixin):
@@ -35,6 +34,7 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
+<<<<<<< Updated upstream:recipes2/models.py
 
 
 class Recipe(db.Model):
@@ -48,3 +48,5 @@ class Recipe(db.Model):
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
+=======
+>>>>>>> Stashed changes:recipes2/models/user.py
