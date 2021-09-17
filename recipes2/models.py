@@ -18,7 +18,9 @@ class User(db.Model, UserMixin):
     email       = db.Column(db.String(120), unique=True, nullable=False)
     image_file  = db.Column(db.String(20), nullable=False, default='default.jpg')
     password    = db.Column(db.String(60), nullable=False)
-    recipes     = db.relationship('Recipe', backref='author', lazy=True)
+    recipes     = db.relationship(  'Recipe', backref='user',
+                                    cascade="all, delete, delete-orphan", passive_deletes=True
+                                    )
 
     def get_reset_token(self, expires_sec=1800):
         s = Serializer(app.config['SECRET_KEY'], expires_sec)
@@ -48,7 +50,7 @@ class Recipe(db.Model):
     ingredients         = db.Column(db.Text, nullable=False)
     directions          = db.Column(db.Text, nullable=False)
     notes               = db.Column(db.Text, nullable=False)
-    user_id             = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id             = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"

@@ -30,7 +30,7 @@ def new_recipe():
                             ingredients         = form.ingredients.data,
                             directions          = form.directions.data,
                             notes               = form.notes.data,
-                            author              = current_user)
+                            user                = current_user)
             db.session.add(recipe)
             db.session.commit()
             flash('Your recipe has been created!','success')

@@ -38,6 +38,25 @@ app.register_blueprint(main)
 from recipes2.errors.handlers import errors
 app.register_blueprint(errors)
 
+from recipes2.templates.custom_template_filters import custom_template_filers
+app.register_blueprint(custom_template_filers)
+
+
+
+# This code block is necessary to make ondelete="cascade" work
+# from https://stackoverflow.com/a/62327279
+
+from sqlalchemy import event
+from sqlalchemy.engine import Engine
+from sqlite3 import Connection as SQLite3Connection
+
+@event.listens_for(Engine, "connect")
+def _set_sqlite_pragma(dbapi_connection, connection_record):
+    if isinstance(dbapi_connection, SQLite3Connection):
+        cursor = dbapi_connection.cursor()
+        cursor.execute("PRAGMA foreign_keys=ON;")
+        cursor.close()
+
 
 
 # db = SQLAlchemy()
