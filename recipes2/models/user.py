@@ -1,4 +1,3 @@
-from datetime import datetime
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from recipes2 import db, login_manager
 from flask import app
@@ -54,3 +53,4 @@ class Recipe(db.Model):
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
+        return f"User('{self.username}', '{self.email}', '{self.image_file}')"

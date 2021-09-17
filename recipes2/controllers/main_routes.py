@@ -1,6 +1,6 @@
 from flask import Blueprint
 from flask import render_template, request
-from recipes2.models import Recipe
+from recipes2.models.recipe import Recipe
 
 main = Blueprint('main', __name__)
 

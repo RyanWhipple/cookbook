@@ -26,16 +26,16 @@ login_manager.login_view = 'users.login'
 login_manager.login_message_category = "info"
 mail = Mail(app)
 
-from recipes2.users.routes import users
+from recipes2.controllers.user_routes import users
 app.register_blueprint(users)
 
-from recipes2.recipes.routes import recipes
+from recipes2.controllers.recipe_routes import recipes
 app.register_blueprint(recipes)
 
-from recipes2.main.routes import main
+from recipes2.controllers.main_routes import main
 app.register_blueprint(main)
 
-from recipes2.errors.handlers import errors
+from recipes2.controllers.error_handlers import errors
 app.register_blueprint(errors)
 
 from recipes2.templates.custom_template_filters import custom_template_filers
