@@ -12,7 +12,7 @@
                 {% for recipe in recipes.items %}
                 <div class="col">
                     <div class="card shadow-sm">
-                        <img src="{{ url_for('static', filename='profile_pics/' + recipe.image_file) }}">
+                        <img src="{{ url_for('static', filename='recipe_pics/' + recipe.image_file) }}">
                         <div class="card-body d-flex align-items-start flex-column">
                             <p class="card-text mb-auto">{{ recipe.name }}</p>
                             <p class="card-text mb-auto">{{ recipe.description }}</p>
