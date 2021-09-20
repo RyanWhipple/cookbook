@@ -7,8 +7,8 @@
         <div class="row mb-3 gx-3 row-eq-height">
             <div class="col-6">
                 <div class="border rounded-3 p-3 bg-light h-100">
-                    <h1>{{ recipe.title }}</h1>
-                    <p class="mb-1"><i>{{ recipe.short_description }}</i></p>
+                    <h1>{{ recipe.name }}</h1>
+                    <p class="mb-1"><i>{{ recipe.description }}</i></p>
                     <hr>
                     <h5>Contributed by:</h5>
                     <div class="row">
@@ -18,7 +18,7 @@
                         <div class="col-10">
                             <a class="mr-2" href="{{url_for('users.user_recipes', username=recipe.user.username) }}">{{ recipe.user.username }}</a>
                             <br>
-                            <small class="text-muted">{{ recipe.date_posted.strftime('%Y-%m-%d') }}</small>
+                            <small class="text-muted">{{ recipe.created_at.strftime('%Y-%m-%d') }}</small>
                         </div>
                     </div>
                     <!-- Update and Delete -->
@@ -37,7 +37,7 @@
                 </div>
             </div>
         </div>
-        <!-- Second Row: Ingredients and Directions -->
+        <!-- Second Row: Ingredients and Instructions -->
         <div class="row mb-3 gx-3 row-eq-height">
             <!-- List of Ingredients -->
             <div class="col col-3">
@@ -47,12 +47,12 @@
                     {{ recipe.ingredients | newline_to_br }}
                 </div>
             </div>
-            <!-- Directions -->
+            <!-- Instructions -->
             <div class="col col-9">
                 <div class="border rounded-3 p-3 bg-light h-100">
-                    <h2>Directions</h2>
+                    <h2>Instructions</h2>
                     <hr>
-                    {{ recipe.directions | newline_to_br }}
+                    {{ recipe.instructions | newline_to_br }}
                 </div>
             </div>
         </div>

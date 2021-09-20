@@ -10,32 +10,32 @@
             <div class="row mb-3 gx-3 row-eq-height">
                 <div class="col-6">
                     <div class="border rounded-3 p-3 bg-light h-100">
-                        <!-- Recipe Title -->
+                        <!-- Recipe Name -->
                         <div class="form-group mb-2">
-                            <!-- {# form.title.label(class="form-control-label") #} -->
-                            {% if form.title.errors %}
-                                {{ form.title(class="form-control form-control-lg is-invalid") }}
+                            <!-- {# form.name.label(class="form-control-label") #} -->
+                            {% if form.name.errors %}
+                                {{ form.name(class="form-control form-control-lg is-invalid") }}
                                 <div class="invalid-feedback">
-                                    {% for error in form.title.errors %}
+                                    {% for error in form.name.errors %}
                                         <span>{{ error }}</span>
                                     {% endfor %}
                                 </div>
                                 {% else %}
-                                    {{ form.title(class="form-control form-control-lg") }}
+                                    {{ form.name(class="form-control form-control-lg") }}
                             {% endif %}
                         </div>
                         <!-- Recipe Short Description -->
                         <div class="form-group">
-                            <!-- {# form.short_description.label(class="form-control-label") #} -->
-                            {% if form.short_description.errors %}
-                                {{ form.short_description(class="form-control form-control-lg is-invalid") }}
+                            <!-- {# form.description.label(class="form-control-label") #} -->
+                            {% if form.description.errors %}
+                                {{ form.description(class="form-control form-control-lg is-invalid") }}
                                 <div class="invalid-feedback">
-                                    {% for error in form.short_description.errors %}
+                                    {% for error in form.description.errors %}
                                         <span>{{ error }}</span>
                                     {% endfor %}
                                 </div>
                                 {% else %}
-                                    {{ form.short_description(class="form-control form-control-lg") }}
+                                    {{ form.description(class="form-control form-control-lg") }}
                             {% endif %}
                         </div>
                         <hr>
@@ -43,20 +43,20 @@
                         <div class="row">
                             <div class="col-2">
                                 {% if recipe %}
-                                    <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + recipe.author.image_file) }}">
+                                    <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + recipe.user.image_file) }}">
                                 {% else %}
                                     <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + current_user.image_file) }}">
                                 {% endif %}
                             </div>
                             <div class="col-10">
                                 {% if recipe %}
-                                    <a class="mr-2" href="{{ url_for('users.user_recipes', username=recipe.author.username) }}">{{ recipe.author.first_name }} {{ recipe.author.last_name }}</a>
+                                    <a class="mr-2" href="{{ url_for('users.user_recipes', username=recipe.user.username) }}">{{ recipe.user.first_name }} {{ recipe.user.last_name }}</a>
                                 {% else %}
                                     <a class="mr-2" href="{{ url_for('users.user_recipes', username=current_user.username) }}">{{ current_user.first_name }} {{ current_user.last_name }}</a>
                                 {% endif %}
                                 <br>
                                 {% if recipe %}
-                                    <small class="text-muted">{{ recipe.date_posted.strftime('%Y-%m-%d') }}</small>
+                                    <small class="text-muted">{{ recipe.created_at.strftime('%Y-%m-%d') }}</small>
                                 {% endif %}
                             </div>
                         </div>
@@ -82,7 +82,7 @@
                     </div>
                 </div>
             </div>
-            <!-- Second Row: Ingredients and Directions -->
+            <!-- Second Row: Ingredients and Instructions -->
             <div class="row mb-3 gx-3 row-eq-height">
                 <!-- Ingredients -->
                 <div class="col col-3">
@@ -105,22 +105,22 @@
                         </div>
                     </div>
                 </div>
-                <!-- Directions -->
+                <!-- Instructions -->
                 <div class="col col-9">
                     <div class="border rounded-3 p-3 bg-light h-100">
-                        <h2>Directions</h2>
+                        <h2>Instructions</h2>
                         <hr>
                         <div class="form-group">
-                            <!-- {# form.directions.label(class="form-control-label") #} -->
-                            {% if form.directions.errors %}
-                                {{ form.directions(class="form-control form-control-lg is-invalid") }}
+                            <!-- {# form.instructions.label(class="form-control-label") #} -->
+                            {% if form.instructions.errors %}
+                                {{ form.instructions(class="form-control form-control-lg is-invalid") }}
                                 <div class="invalid-feedback">
-                                    {% for error in form.directions.errors %}
+                                    {% for error in form.instructions.errors %}
                                         <span>{{ error }}</span>
                                     {% endfor %}
                                 </div>
                                 {% else %}
-                                    {{ form.directions(class="form-control form-control-lg") }}
+                                    {{ form.instructions(class="form-control form-control-lg") }}
                             {% endif %}
                         </div>
                     </div>

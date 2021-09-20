@@ -1,3 +1,4 @@
+from datetime import datetime
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from recipes2 import db, login_manager
 from flask import app
@@ -10,14 +11,18 @@ def load_user(user_id):
 
 
 class User(db.Model, UserMixin):
-    id          = db.Column(db.Integer, primary_key=True)
-    username    = db.Column(db.String(20), unique=True, nullable=False)
-    first_name  = db.Column(db.String(40), nullable=False)
-    last_name   = db.Column(db.String(40), nullable=False)
-    email       = db.Column(db.String(120), unique=True, nullable=False)
-    image_file  = db.Column(db.String(20), nullable=False, default='default.jpg')
-    password    = db.Column(db.String(60), nullable=False)
-    recipes     = db.relationship(  'Recipe', backref='user',
+    id              = db.Column(db.Integer, primary_key=True)
+    username        = db.Column(db.String(45), nullable=True)
+    email           = db.Column(db.String(120), nullable=False, unique=True)
+    password        = db.Column(db.String(60), nullable=False)
+    created_at      = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    updated_at      = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    default_home    = db.Column(db.SmallInteger, nullable=False, default=0)
+    default_privacy = db.Column(db.SmallInteger, nullable=False, default=3)
+    first_name      = db.Column(db.String(45), nullable=True, default="")
+    last_name       = db.Column(db.String(45), nullable=True, default="")
+    image_file      = db.Column(db.String(20), nullable=False, default='default.jpg')
+    recipes         = db.relationship(  'Recipe', backref='user',
                                     cascade="all, delete, delete-orphan", passive_deletes=True
                                     )
 
@@ -37,20 +42,4 @@ class User(db.Model, UserMixin):
         return User.query.get(user_id)
 
     def __repr__(self):
-        return f"User('{self.username}', '{self.email}', '{self.image_file}')"
-
-
-class Recipe(db.Model):
-    id                  = db.Column(db.Integer, primary_key=True)
-    title               = db.Column(db.String(100), nullable=False)
-    short_description   = db.Column(db.String(255), nullable=False)
-    image_file          = db.Column(db.String(20), nullable=False, default='default.jpg')
-    date_posted         = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    ingredients         = db.Column(db.Text, nullable=False)
-    directions          = db.Column(db.Text, nullable=False)
-    notes               = db.Column(db.Text, nullable=False)
-    user_id             = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
-
-    def __repr__(self):
-        return f"Post('{self.title}', '{self.date_posted}')"
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"

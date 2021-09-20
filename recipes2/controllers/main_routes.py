@@ -7,7 +7,7 @@ main = Blueprint('main', __name__)
 @main.route('/')
 def home():
     page = request.args.get('page', 1, type=int)
-    recipes = Recipe.query.order_by(Recipe.date_posted.desc()).paginate(page=page, per_page=6)
+    recipes = Recipe.query.order_by(Recipe.created_at.desc()).paginate(page=page, per_page=6)
     return render_template('home.html', title='Home', recipes=recipes)
 
 

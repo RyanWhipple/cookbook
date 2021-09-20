@@ -10,7 +10,11 @@ from flask_mail import Mail
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
+
+
+# Database Connection config:
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['SQLALCHEMY_DATABASE_URI']
+
 
 # iCloud Email
 app.config['MAIL_SERVER'] = 'smtp.mail.me.com'
@@ -38,26 +42,48 @@ app.register_blueprint(main)
 from recipes2.controllers.error_handlers import errors
 app.register_blueprint(errors)
 
-from recipes2.templates.custom_template_filters import custom_template_filers
+from recipes2.utils.custom_template_filters import custom_template_filers
 app.register_blueprint(custom_template_filers)
 
 
-
+# SQLite code
 # This code block is necessary to make ondelete="cascade" work
 # from https://stackoverflow.com/a/62327279
 
-from sqlalchemy import event
-from sqlalchemy.engine import Engine
-from sqlite3 import Connection as SQLite3Connection
+# from sqlalchemy import event
+# from sqlalchemy.engine import Engine
+# from sqlite3 import Connection as SQLite3Connection
 
-@event.listens_for(Engine, "connect")
-def _set_sqlite_pragma(dbapi_connection, connection_record):
-    if isinstance(dbapi_connection, SQLite3Connection):
-        cursor = dbapi_connection.cursor()
-        cursor.execute("PRAGMA foreign_keys=ON;")
-        cursor.close()
+# @event.listens_for(Engine, "connect")
+# def _set_sqlite_pragma(dbapi_connection, connection_record):
+#     if isinstance(dbapi_connection, SQLite3Connection):
+#         cursor = dbapi_connection.cursor()
+#         cursor.execute("PRAGMA foreign_keys=ON;")
+#         cursor.close()
 
 
+
+
+# This code block is for connecting to MySQL
+# https://hackersandslackers.com/python-database-management-sqlalchemy/
+
+# from sqlalchemy import create_engine
+
+# engine=create_engine(
+#     "mysql+pymysql://root:theverybest@127.0.0.1:3306/recipes2"
+# )
+
+# Might need to be db.engine???
+# https://towardsdatascience.com/sqlalchemy-python-tutorial-79a577141a91
+# db.engine=create_engine(
+#     "mysql+pymysql://root:theverybest@127.0.0.1:3306/recipes2"
+# )
+
+
+#  ###
+#  Code below is to use a factory to build the app based on the config file.  This didn't work well with SQLite because the db couldn't be initialized without the app running since the app only created the DB once it was initialized with the config file
+#  Might re-instate this now that we're on MySQL but there is no rush to do so.
+#  ###
 
 # db = SQLAlchemy()
 # bcrypt = Bcrypt()
