@@ -2,26 +2,43 @@
 
 {% block content %}
 
+    <!-- Recipe -->
     <div class="container bg-secondary rounded-3 py-3">
         <!-- First Row: Description and Image -->
         <div class="row mb-3 gx-3 row-eq-height">
+            <!-- First Column: Metadata -->
             <div class="col-6">
                 <div class="border rounded-3 p-3 bg-light h-100">
                     <h1>{{ recipe.name }}</h1>
                     <p class="mb-1"><i>{{ recipe.description }}</i></p>
                     <hr>
-                    <h5>Contributed by:</h5>
+                    {% if recipe.prep_time %}
+                        <p><b>Prep Time: </b>{{recipe.prep_time}} minutes</p>
+                    {% endif %}
+                    {% if recipe.cook_time %}
+                        <p><b>Cook Time: </b>{{recipe.cook_time}} minutes</p>
+                    {% endif %}
+                    <hr>
                     <div class="row">
-                        <div class="col-2">
-                            <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + recipe.user.image_file) }}">
+                        <div class="col-6">
+                            <h4>Contributed by:</h4>
+                            <!-- User Image -->
+                            <div class="col-2">
+                                <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + recipe.user.image_file) }}">
+                            </div>
+                            <!-- User Details -->
+                            <div class="col-4">
+                                <a class="mr-2" href="{{url_for('users.user_recipes', username=recipe.user.username) }}">{{ recipe.user.username }}</a>
+                                <br>
+                                <small class="text-muted">{{ recipe.created_at.strftime('%Y-%m-%d') }}</small>
+                            </div>
                         </div>
-                        <div class="col-10">
-                            <a class="mr-2" href="{{url_for('users.user_recipes', username=recipe.user.username) }}">{{ recipe.user.username }}</a>
-                            <br>
-                            <small class="text-muted">{{ recipe.created_at.strftime('%Y-%m-%d') }}</small>
+                        <div class="col-6">
+                            <h4>Made this recipe?</h4>
+                            <button type="button" class="btn btn-primary btn-sm m-1" data-bs-toggle="modal" data-bs-target="#resultModal">Post Your Result!</button>
                         </div>
                     </div>
-                    <!-- Update and Delete -->
+                    <!-- Update and Delete / Follow -->
                     {% if recipe.user == current_user %}
                         <div>
                             <a class="btn btn-secondary btn-sm m-1" href="{{ url_for('recipes.update_recipe', recipe_id=recipe.id) }}">Update</a>
@@ -30,7 +47,7 @@
                     {% endif %}
                 </div>
             </div>
-            <!-- Recipe Image -->
+            <!-- Second Column: Recipe Image -->
             <div class="col-6">
                 <div class="border rounded-3 p-3 bg-light">
                     <img src="{{url_for('static', filename='recipe_pics/' + recipe.image_file) }}" class="w-100">
@@ -69,7 +86,30 @@
 
     </div>
 
-    <!-- Modal -->
+    <!-- Results Album -->
+    <div class="container bg-secondary rounded-3 px-3 py-4 mt-4">
+        <div class="album bg-secondary">
+            <div class="container">
+                <h2 class="border rounded-3 p-3 bg-light h-100 mb-3">Results</h2>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                
+                    {% for result in results.items %}
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <img src="{{ url_for('static', filename='result_pics/' + result.image_file) }}">
+                            <div class="card-body d-flex align-items-start flex-column">
+                                <p class="card-text mb-auto">{{ result.snippet }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -86,6 +126,64 @@
                         <input class="btn btn-danger" type="submit" value="Delete">
                     </form>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Modal -->
+    <div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="resultModalLabel">Post Your Result</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="/recipe/{{ recipe.id }}/result/new" enctype="multipart/form-data">
+                        {{ result_form.hidden_tag() }}
+                        <fieldset class="form-group">
+
+                            <!-- Recipe Notes -->
+                            <div class="form-group">
+                                {{ result_form.snippet.label(class="form-control-label") }}
+                                {% if result_form.snippet.errors %}
+                                    {{ result_form.snippet(class="form-control form-control-lg is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in result_form.snippet.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                        {{ result_form.snippet(class="form-control form-control-lg") }}
+                                {% endif %}
+                            </div>
+                            <!-- Recipe Image -->
+                            <div class="form-group mt-3">
+                                {{ result_form.picture.label(class="form-control-label") }}<br>
+                                {{ result_form.picture(class="form-control-file")}}
+                                {% if result_form.picture.errors %}
+                                    {% for error in result_form.picture.errors %}
+                                        <span class="text-danger">{{ error }}</span><br>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <!-- Fourth Row: Submit Button -->
+                            <div class="row mb-3 gx-3">
+                                <div class="col">
+                                    <div class="border rounded-3 p-3 bg-light d-flex justify-content-center">
+                                        {{ result_form.submit(class="btn btn-primary") }}
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <!-- <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <form action="{# url_for('recipes.result_recipe', recipe_id=recipe.id) #}" method="POST">
+                        <input class="btn btn-danger" type="submit" value="Result">
+                    </form>
+                </div> -->
             </div>
         </div>
     </div>

@@ -3,7 +3,9 @@ from flask import render_template, url_for, flash, redirect, request, abort
 from flask_login import current_user, login_required
 from recipes2 import db
 from recipes2.models.recipe import Recipe
+from recipes2.models.result import Result
 from recipes2.forms.recipe_forms import RecipeForm
+from recipes2.forms.result_forms import ResultForm
 from recipes2.utils.utils import save_picture
 
 recipes = Blueprint('recipes', __name__)
@@ -26,6 +28,8 @@ def new_recipe():
             
             recipe = Recipe(name                = form.name.data,
                             description         = form.description.data,
+                            prep_time           = form.prep_time.data,
+                            cook_time           = form.cook_time.data,
                             image_file          = picture_file,
                             ingredients         = form.ingredients.data,
                             instructions        = form.instructions.data,
@@ -52,34 +56,50 @@ def update_recipe(recipe_id):
 
     # Display form filled-in with Recipe's current data
     if request.method == 'GET':
-        form.name.data = recipe.name
-        form.description.data = recipe.description
-        form.ingredients.data = recipe.ingredients
-        form.instructions.data = recipe.instructions
-        form.notes.data = recipe.notes
-        return render_template('recipe_create_update.html', title='Update Recipe', form=form, legend='Update Recipe', recipe=recipe)
+            form.name.data          = recipe.name
+            form.description.data   = recipe.description
+            form.prep_time.data     = recipe.prep_time
+            form.cook_time.data     = recipe.cook_time
+            form.ingredients.data   = recipe.ingredients
+            form.instructions.data  = recipe.instructions
+            form.notes.data         = recipe.notes
+            return render_template('recipe_create_update.html', title='Update Recipe', form=form, legend='Update Recipe', recipe=recipe)
 
     # Save updated form
     elif request.method == "POST":
         if form.validate_on_submit():
-            recipe.name = form.name.data
-            recipe.description = form.description.data
+            recipe.name         = form.name.data
+            recipe.description  = form.description.data
+            recipe.prep_time    = form.prep_time.data
+            recipe.cook_time    = form.cook_time.data
             
             if form.picture.data:
                 picture_file = save_picture(form.picture.data, "recipe_pics/")
                 recipe.image_file = picture_file
             
+            recipe.ingredients  = form.ingredients.data
             recipe.instructions = form.instructions.data
+            recipe.notes        = form.notes.data
             db.session.commit()
             flash('Your recipe has been updated!', 'success')
             return redirect(url_for('recipes.recipe', recipe_id=recipe.id))
+        else:
+            print("update_recipe form.validate_on_submit() failed")
+            return render_template('recipe_create_update.html', title=recipe.name, form=form, legend=recipe.name)
     
 
 
 @recipes.route('/recipe/<int:recipe_id>', methods=['GET', 'POST'])
 def recipe(recipe_id):
     recipe = Recipe.query.get_or_404(recipe_id)
-    return render_template('recipe_read.html', title=recipe.name, recipe=recipe)
+    result_form = ResultForm()
+
+    # page = request.args.get('page', 1, type=int)
+    results = Result.query.order_by(Result.created_at.desc()).paginate(
+        # page=page,
+        per_page=6)
+
+    return render_template('recipe_read.html', title=recipe.name, recipe=recipe, result_form = result_form, results=results)
 
 
 @recipes.route('/recipe/<int:recipe_id>/delete', methods=['POST'])

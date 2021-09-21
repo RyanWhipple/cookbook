@@ -8,6 +8,7 @@
         <fieldset class="form-group">
             <!-- First Row: Description and Image -->
             <div class="row mb-3 gx-3 row-eq-height">
+                <!-- First Column: Metadata -->
                 <div class="col-6">
                     <div class="border rounded-3 p-3 bg-light h-100">
                         <!-- Recipe Name -->
@@ -24,7 +25,7 @@
                                     {{ form.name(class="form-control form-control-lg") }}
                             {% endif %}
                         </div>
-                        <!-- Recipe Short Description -->
+                        <!-- Recipe Description -->
                         <div class="form-group">
                             <!-- {# form.description.label(class="form-control-label") #} -->
                             {% if form.description.errors %}
@@ -39,6 +40,56 @@
                             {% endif %}
                         </div>
                         <hr>
+                        <!-- Prep Time -->
+                        <div class="row mb-2">
+                            {{ form.prep_time.label(class="form-control-label col-2 col-form-label") }}
+                            {% if form.prep_time.errors %}
+                                <div class="col-4">
+                                    {{ form.prep_time(class="form-control form-control-lg is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.prep_time.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    minutes
+                                </div>
+                            {% else %}
+                                <div class="col-4">
+                                    {{ form.prep_time(class="form-control form-control-lg") }}
+                                </div>
+                                <div class="col-6">
+                                    minutes
+                                </div>
+                            {% endif %}
+                        </div>
+                        <!-- Cook Time -->
+                        <div class="row mb-2">
+                            {{ form.cook_time.label(class="form-control-label col-2 col-form-label") }}
+                            {% if form.cook_time.errors %}
+                                <div class="col-4">
+                                    {{ form.cook_time(class="form-control form-control-lg is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.cook_time.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    minutes
+                                </div>
+                            {% else %}
+                                <div class="col-4">
+                                    {{ form.cook_time(class="form-control form-control-lg") }}
+                                </div>
+                                <div class="col-6">
+                                    minutes
+                                </div>
+                            {% endif %}
+                        </div>
+                        <hr>
+                        <!-- Contributed By -->
                         <h5>Contributed by:</h5>
                         <div class="row">
                             <div class="col-2">
