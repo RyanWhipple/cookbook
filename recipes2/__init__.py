@@ -9,8 +9,9 @@ from flask_mail import Mail
 
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
+# RESTART VIRTUAL ENVIRONMENT IF CHANGING FROM HARDCODED VALUE TO AN os.environ VALUE
 
+app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
 
 # Database Connection config:
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['SQLALCHEMY_DATABASE_URI']
