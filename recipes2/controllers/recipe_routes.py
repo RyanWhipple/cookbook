@@ -22,7 +22,7 @@ def new_recipe():
         if form.validate_on_submit():
             
             if form.picture.data:
-                picture_file = save_picture(form.picture.data)
+                picture_file = save_picture(form.picture.data, "recipe_pics/")
             
             recipe = Recipe(name                = form.name.data,
                             description         = form.description.data,
@@ -66,7 +66,7 @@ def update_recipe(recipe_id):
             recipe.description = form.description.data
             
             if form.picture.data:
-                picture_file = save_picture(form.picture.data)
+                picture_file = save_picture(form.picture.data, "recipe_pics/")
                 recipe.image_file = picture_file
             
             recipe.instructions = form.instructions.data

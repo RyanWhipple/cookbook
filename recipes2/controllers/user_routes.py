@@ -68,7 +68,7 @@ def account():
     elif request.method == "POST":
         if form.validate_on_submit():
             if form.picture.data:
-                picture_file = save_picture(form.picture.data)
+                picture_file = save_picture(form.picture.data, "profile_pics/")
                 current_user.image_file = picture_file
             current_user.first_name     = form.first_name.data
             current_user.last_name      = form.last_name.data
