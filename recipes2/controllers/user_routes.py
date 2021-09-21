@@ -1,3 +1,4 @@
+import re
 from flask import Blueprint
 from flask import render_template, url_for, flash, redirect, request, abort
 from flask_login import login_user, current_user, logout_user, login_required
@@ -7,7 +8,7 @@ from recipes2.models.recipe import Recipe
 from recipes2.forms.user_forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm
 from recipes2.utils.utils import save_picture, send_reset_email
 
-
+EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 users = Blueprint('users', __name__)
 
 
@@ -46,7 +47,7 @@ def login():
     return render_template('login.html', title='Login', form=form)
 
 
-@users.route('/logout')
+@users.route('/logout/')
 def logout():
     logout_user()
     return redirect(url_for('main.home'))
@@ -131,3 +132,37 @@ def reset_token(token):
         flash(f'Your password has been changed!  You are now able to log in', 'success')
         return redirect(url_for('users.login'))
     return render_template('reset_token.html', title='Reset Password', form=form)
+
+@users.route('/ajax/user/username', methods=["POST"])
+def validate_username_ajax():
+    invalid = '';
+    if len(request.form['username']) < 3:
+        invalid = 'short'
+        return render_template('partials/username.html', invalid=invalid)
+    user = User.query.filter_by(username=request.form['username']).first()
+    if user:
+        invalid = 'taken'
+        return render_template('partials/username.html', invalid=invalid)
+    return render_template('partials/username.html', invalid=invalid)
+
+@users.route('/ajax/user/email', methods=["POST"])
+def validate_email_ajax():
+    invalid = '';
+    if not EMAIL_REGEX.match(request.form['email']):
+        invalid = 'not_email'
+        return render_template('partials/email.html', invalid=invalid)
+    user = User.query.filter_by(email=request.form['email']).first()
+    if user:
+        invalid = 'taken'
+        return render_template('partials/email.html', invalid=invalid)
+    return render_template('partials/email.html', invalid=invalid)
+
+@users.route('/ajax/user/password', methods=["POST"])
+def validate_password_ajax():
+    invalid = len(request.form['password']) < 8;
+    return render_template('partials/password.html', invalid=invalid)
+
+@users.route('/ajax/user/confirm_password', methods=["POST"])
+def validate_confirm_password_ajax():
+    invalid = not request.form['password'] == request.form['confirm_password'] ;
+    return render_template('partials/confirm_password.html', invalid=invalid)

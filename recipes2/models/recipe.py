@@ -6,6 +6,7 @@ class Recipe(db.Model):
     id                  = db.Column(db.Integer, primary_key=True)
     name                = db.Column(db.String(155))
     image_file          = db.Column(db.String(20), nullable=False, default='default.jpg')
+<<<<<<< Updated upstream
     description         = db.Column(db.String(255))
     cook_time           = db.Column(db.Integer)
     prep_time           = db.Column(db.Integer)
@@ -17,6 +18,13 @@ class Recipe(db.Model):
     updated_at          = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user_id             = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
     
+=======
+    date_posted         = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    ingredients         = db.Column(db.Text, nullable=False)
+    directions          = db.Column(db.Text, nullable=False)
+    notes               = db.Column(db.Text, nullable=False)
+    user_id             = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
+>>>>>>> Stashed changes
 
     def __repr__(self):
         return f"Recipe('{self.title}', '{self.date_posted}')"

@@ -1,0 +1,6 @@
+{% if invalid == 'not_email' %}
+<p class="text-danger">Invalid Email.</p>
+{% elif invalid == 'taken' %}
+<p class="text-danger">Email is taken, try logging in.</p>
+{% else %}
+{% endif %}

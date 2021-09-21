@@ -1,0 +1,6 @@
+{% if invalid == 'short' %}
+<p class="text-danger">Username must be at least 3 characters.</p>
+{% elif invalid == 'taken' %}
+<p class="text-danger">Username is taken.</p>
+{% else %}
+{% endif %}
