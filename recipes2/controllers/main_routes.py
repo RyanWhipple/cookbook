@@ -20,7 +20,6 @@ def about():
 
 @main.route('/ajax/image/update/<folder>', methods=['POST'])
 def update_image(folder):
-    print(type(folder))
     if folder=="recipe_pics":
         form=RecipeForm()
     picture=form.picture.data
