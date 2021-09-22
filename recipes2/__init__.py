@@ -37,6 +37,9 @@ app.register_blueprint(users)
 from recipes2.controllers.recipe_routes import recipes
 app.register_blueprint(recipes)
 
+from recipes2.controllers.result_routes import results
+app.register_blueprint(results)
+
 from recipes2.controllers.main_routes import main
 app.register_blueprint(main)
 

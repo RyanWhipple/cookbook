@@ -13,6 +13,7 @@ python-dotenv = "*"
 flask-wtf = "*"
 email-validator = "*"
 pillow = "*"
+pymysql = "*"
 
 [dev-packages]
 
