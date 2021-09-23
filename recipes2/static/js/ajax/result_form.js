@@ -31,6 +31,24 @@ $(document).ready(function(){
             checkValid();
         }
     });
+    $("#result_form").submit(function(e){
+        e.preventDefault();
+        $.ajax({
+            method:'POST',
+            url:'./ajax/results/create',
+            data: new FormData($('#result_form')[0]),
+            contentType:false,
+            cache:false,
+            processData:false,
+            success:function(results){
+                result = $('#results_container').prepend(results);
+                $('#resultModal').modal('toggle');
+                $([document.documentElement, document.body]).animate({
+                        scrollTop: $(result).offset().top
+                    }, 500);
+                }
+            });
+    });
 });
 function checkValid(){
     if (Object.values(validators).every(validator => validator==true)){
