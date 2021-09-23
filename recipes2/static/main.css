@@ -7,7 +7,7 @@
 body {
   background: #d0d0d0;
   color: #000000;
-  padding-top: 125px;
+  padding-top: 110px;
   }
 
 .container {
@@ -19,6 +19,7 @@ body {
   padding-left: 1vh;
   padding-right: 1vh;
   padding-bottom: 2vh;
+  margin-bottom: 2vh;
   border-radius: 5px;
 }
 
