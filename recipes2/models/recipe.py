@@ -18,4 +18,4 @@ class Recipe(db.Model):
     user_id             = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
 
     def __repr__(self):
-        return f"Recipe('{self.title}', '{self.date_posted}')"
+        return f"Recipe('{self.name}', '{self.user_id}, '{self.created_at}')"
