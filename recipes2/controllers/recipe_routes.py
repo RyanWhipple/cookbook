@@ -89,7 +89,7 @@ def update_recipe(recipe_id):
     
 
 
-@recipes.route('/recipe/<int:recipe_id>', methods=['GET', 'POST'])
+@recipes.route('/recipe/<int:recipe_id>/', methods=['GET', 'POST'])
 def recipe(recipe_id):
     recipe = Recipe.query.get_or_404(recipe_id)
     result_form = ResultForm()
