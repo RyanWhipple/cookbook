@@ -25,6 +25,9 @@ class User(db.Model, UserMixin):
     recipes         = db.relationship(  'Recipe', backref='user',
                                     cascade="all, delete, delete-orphan", passive_deletes=True
                                     )
+    results         = db.relationship(  'Result', backref='user',
+                                    cascade="all, delete, delete-orphan", passive_deletes=True
+                                    )
 
     def get_reset_token(self, expires_sec=1800):
         s = Serializer(app.config['SECRET_KEY'], expires_sec)
