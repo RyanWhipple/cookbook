@@ -2,6 +2,7 @@ from flask import Blueprint
 from flask import render_template, request
 from recipes2.models.recipe import Recipe
 from recipes2.forms.recipe_forms import RecipeForm
+from recipes2.forms.result_forms import ResultForm
 from recipes2.utils.utils import save_picture
 
 
@@ -20,8 +21,9 @@ def about():
 
 @main.route('/ajax/image/update/<folder>', methods=['POST'])
 def update_image(folder):
-    print(type(folder))
     if folder=="recipe_pics":
         form=RecipeForm()
+    if folder=="result_pics":
+        form=ResultForm()
     picture=form.picture.data
     return save_picture(picture,folder)

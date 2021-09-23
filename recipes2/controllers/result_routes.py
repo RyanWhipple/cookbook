@@ -99,3 +99,19 @@ def new_result(recipe_id):
 #     db.session.commit()
 #     flash('Your recipe has been deleted!', 'success')
 #     return redirect(url_for('main.home'))
+
+@results.route('/recipe/<int:recipe_id>/ajax/results/create', methods=['POST'])
+def create_result(recipe_id):
+    form = ResultForm()
+    if form.validate_on_submit():
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data, "result_pics/")
+        result = Result(image_file          = picture_file,
+                        snippet             = form.snippet.data,
+                        recipe_id           = recipe_id,
+                        user_id             = current_user.id)
+        db.session.add(result)
+        db.session.commit()
+        return render_template('partials/result.html',result = result)
+    else:
+        print("new_recipe form.validate_on_submit() failed")
