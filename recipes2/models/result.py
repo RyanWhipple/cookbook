@@ -14,4 +14,4 @@ class Result(db.Model):
     
     
     def __repr__(self):
-        return f"Result('{self.title}', '{self.date_posted}')"
+        return f"Result('{self.snippet}', '{self.user_id}', '{self.created_at}')"

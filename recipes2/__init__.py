@@ -46,8 +46,11 @@ app.register_blueprint(main)
 from recipes2.controllers.error_handlers import errors
 app.register_blueprint(errors)
 
-from recipes2.utils.custom_template_filters import custom_template_filers
-app.register_blueprint(custom_template_filers)
+from recipes2.controllers.social_feed_routes import social_feeds
+app.register_blueprint(social_feeds)
+
+from recipes2.utils.custom_template_filters import custom_template_filters
+app.register_blueprint(custom_template_filters)
 
 
 # SQLite code

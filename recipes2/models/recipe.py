@@ -17,5 +17,10 @@ class Recipe(db.Model):
     updated_at          = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user_id             = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
 
+    results             = db.relationship(  'Result', backref='recipe',
+                                    cascade="all, delete, delete-orphan", passive_deletes=True
+                                    )
+    
+
     def __repr__(self):
-        return f"Recipe('{self.title}', '{self.date_posted}')"
+        return f"Recipe('{self.name}', '{self.user_id}, '{self.created_at}')"
