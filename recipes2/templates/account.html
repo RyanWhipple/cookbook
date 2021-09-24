@@ -1,112 +1,110 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    <div class="container bg-secondary rounded-3 py-3">
-        <div class="media">
-            <img class="rounded-circle account-img" src="{{ image_file }}">
-            <div class="media-body">
-                <h2 class="account-heading">{{ current_user.username }}</h2>
-                <p class="text-secondary">{{ current_user.email }}</p>
+    <div class="container rounded-3 py-3">
+        <div class="row">
+            <div class="col-2">
+                <img class="rounded-circle account-img" src="{{ image_file }}">
             </div>
-        </div>
-        <!-- Account Update Form -->
-        <div class="">
-            <form method="POST" action="" enctype="multipart/form-data">
-                {{ form.hidden_tag() }}
-                <fieldset class="form-group">
-                    <legend class="border-bottom mb-4">Update Account Info</legend>
-                    <!-- First Name -->
-                    <div class="form-group">
-                        {{ form.first_name.label(class="form-control-label") }}
-                        {% if form.first_name.errors %}
-                            {{ form.first_name(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.first_name.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                            {% else %}
-                                {{ form.first_name(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
-                    <!-- Last Name -->
-                    <div class="form-group">
-                        {{ form.last_name.label(class="form-control-label") }}
-                        {% if form.last_name.errors %}
-                            {{ form.last_name(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.last_name.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                            {% else %}
-                                {{ form.last_name(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
-                    <!-- Username -->
-                    <div class="form-group">
-                        {{ form.username.label(class="form-control-label") }}
-                        {% if form.username.errors %}
-                            {{ form.username(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.username.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                            {% else %}
-                                {{ form.username(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
-                    <!-- Email -->
-                    <div class="form-group">
-                        {{ form.email.label(class="form-control-label") }}
-                        {% if form.email.errors %}
-                            {{ form.email(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.email.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                            {% else %}
-                                {{ form.email(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
-                    <!-- Profile Picture -->
-                    <div class="form-group mt-3">
-                        {{ form.picture.label(class="form-control-label") }}<br>
-                        {{ form.picture(class="form-control-file")}}
-                        {% if form.picture.errors %}
-                            {% for error in form.picture.errors %}
-                                <span class="text-danger">{{ error }}</span><br>
-                            {% endfor %}
-                        {% endif %}
-                    </div>
-                </fieldset>
-                <div class="form-group pt-3">
-                    {{ form.submit(class="btn btn-outline-info") }}
-                    <button type="button" class="btn btn-danger btn-md m-1" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
-                </div>
-            </form>
+            <div class="col-10">
+                <h2>{{ current_user.username }}</h2>
+                <p>{{ current_user.email }}</p>
+                <a class="btn btn-primary btn-sm m-1" href="{{ url_for('users.account_edit', user_id=current_user.id) }}">Update My Account</a>
+            </div>
         </div>
     </div>
 
+    <!-- Following Grid -->
+    <div class="container">
+        <div class="album">
+            <div class="container p-3">
+                <h1>Following</h1>
+                <hr>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+                    
+                    {% for followee in followees.items %}
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <div class="row">
+                                <div class="col-4">
+                                    <img src="{{ url_for('static', filename='profile_pics/' + followee.followee.image_file) }}" class="img-fluid rounded-start">
+                                </div>
+                                <div class="col-8">
+                                    <br>
+                                    <a href="{{ url_for('users.account', user_id=followee.followee_id) }}"><h5 class="card-title">{{ followee.followee.first_name }} {{ followee.followee.last_name }}</h5></a>
+                                    <a class="btn btn-danger btn-sm m-1" href="{{ url_for('social_feed.unfollow', followee_id=followee.followee_id) }}">Unfollow this user</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
 
-    <!-- Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Delete Your Account?</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <!-- <div class="modal-body">
-                    ...
-                </div> -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <form action="{{ url_for('users.delete_user', user_id=current_user.id) }}" method="POST">
-                        <input class="btn btn-danger" type="submit" value="Delete">
-                    </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recipes Album -->
+    <div class="container rounded-3">
+        <div class="album">
+            <div class="container p-3">
+                <h1>Recipes</h1>
+                <hr>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+                
+                    {% for recipe in recipes.items %}
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <img src="{{ url_for('static', filename='recipe_pics/' + recipe.image_file) }}" class="card-img-top">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ recipe.name }}</h5>
+                                <p class="card-text">{{ recipe.description }}</p>
+                            </div>
+                            <div class="card-footer">
+                                <div class="btn-group">
+                                    <a class="btn btn-sm btn-outline-secondary" href="{{url_for('recipes.recipe', recipe_id=recipe.id) }}">View</a>
+                                    {% if recipe.user == current_user %}
+                                        <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('recipes.update_recipe', recipe_id=recipe.id) }}">Edit</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Album -->
+    <div class="container rounded-3">
+        <div class="album">
+            <div class="container p-3">
+                <h1>Results</h1>
+                <hr>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+                
+                    {% for result in results.items %}
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <img src="{{ url_for('static', filename='result_pics/' + result.image_file) }}" class="card-img-top">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ result.name }}</h5>
+                                <p class="card-text">{{ result.snippet }}</p>
+                            </div>
+                            <div class="card-footer">
+                                <div class="btn-group">
+                                    <!-- <a class="btn btn-sm btn-outline-secondary" href="{#url_for('results.result', result_id=result.id) #}">View</a> -->
+                                    {% if result.user == current_user %}
+                                        <!-- <a class="btn btn-sm btn-outline-secondary" href="{# url_for('results.update_result', result_id=result.id) #}">Edit</a> -->
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                
                 </div>
             </div>
         </div>

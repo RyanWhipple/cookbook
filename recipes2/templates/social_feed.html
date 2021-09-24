@@ -14,7 +14,7 @@
                     {% if item[1] == "recipe" %}
                         <div class="col">
                             <div class="card shadow-sm">
-                                <div class="bg-white pt-3 px-3 rounded-top">
+                                <div class="bg-light pt-3 px-3 rounded-top">
                                     <b>{{ item[0].user.first_name }} {{ item[0].user.last_name }} contributed a Recipe:</b>
                                     <p>{{ item[0].created_at.strftime('%B %d') }}{{ item[0].created_at.strftime('%d')|ordinal_date }}</p>
                                 </div>
@@ -36,7 +36,7 @@
                     {% elif item[1] == "result" %}
                         <div class="col">
                             <div class="card shadow-sm">
-                                <div class="bg-white pt-3 px-3 rounded-top">
+                                <div class="bg-light pt-3 px-3 rounded-top">
                                     <b>{{ item[0].user.first_name }} {{ item[0].user.last_name }} contributed a Result:</b>
                                     <p>{{ item[0].created_at.strftime('%B %d') }}{{ item[0].created_at.strftime('%d')|ordinal_date }}</p>
                                 </div>
