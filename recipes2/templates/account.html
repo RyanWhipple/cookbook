@@ -44,6 +44,36 @@
         </div>
     </div>
 
+    <!-- Follower Grid -->
+    <div class="container">
+        <div class="album">
+            <div class="container p-3">
+                <h1>Followers</h1>
+                <hr>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+                    
+                    {% for follower in followers.items %}
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <div class="row">
+                                <div class="col-4">
+                                    <img src="{{ url_for('static', filename='profile_pics/' + follower.follower.image_file) }}" class="img-fluid rounded-start">
+                                </div>
+                                <div class="col-8">
+                                    <br>
+                                    <a href="{{ url_for('users.account', user_id=follower.follower_id) }}"><h5 class="card-title">{{ follower.follower.first_name }} {{ follower.follower.last_name }}</h5></a>
+                                    <a class="btn btn-danger btn-sm m-1" href="{{ url_for('social_feed.block', follower_id=follower.follower_id) }}">Block this user (but not really)</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Recipes Album -->
     <div class="container rounded-3">
         <div class="album">

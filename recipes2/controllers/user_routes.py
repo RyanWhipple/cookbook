@@ -73,7 +73,10 @@ def account():
     page = request.args.get('page', 1, type=int)
     followees = Follower.query.filter_by(follower_id = current_user.id).paginate(page=page, per_page=6)
 
-    return render_template('account.html', title='Account', recipes=recipes, results=results, image_file=image_file, followees=followees)
+    page = request.args.get('page', 1, type=int)
+    followers = Follower.query.filter_by(followee_id = current_user.id).paginate(page=page, per_page=6)
+
+    return render_template('account.html', title='Account', recipes=recipes, results=results, image_file=image_file, followees=followees, followers=followers)
 
 
 

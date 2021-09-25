@@ -74,4 +74,15 @@ def unfollow(followee_id):
     db.session.delete(to_delete)
     db.session.commit()
     
-    return redirect(url_for('main.home'))
+    return redirect(url_for('users.account'))
+
+
+@social_feeds.route('/social_feed/block/<int:follower_id>', methods=['GET', 'POST'])
+@login_required
+def block(follower_id):
+    
+    to_delete = Follower.query.filter(Follower.follower_id==follower_id, Follower.followee_id == current_user.id).first()
+    db.session.delete(to_delete)
+    db.session.commit()
+    
+    return redirect(url_for('users.account'))
