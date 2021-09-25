@@ -122,8 +122,52 @@ a.article-title:hover {
   }
 }
 
+.ui-tabs{
+  /* border: none; */
+}
 
+#tabs{
+  border: none;
+    /* this must be set to get rid of the 1px border around the tab bar.  Cannot replace with border: 0px; on container for some reason */
+}
 
+#tabs .ui-widget-content {
+  border:none;
+  padding:0px;
+  margin:0px;
+}
+
+.ui-tabs {
+  background: #d0d0d0;
+}
+
+.ui-tabs-nav{
+  background: inherit;
+  border: none;
+  border-color: #d0d0d0;
+  border-radius: 0;
+  margin: 0px;
+  padding: 0px;
+}
+.ui-tabs-tab{
+
+}
+
+.ui-tabs-anchor{
+
+}
+
+.ui-tabs-panel{
+
+}
+
+.ui-widget{
+  
+}
+
+.ui-widget-content {
+  /* border: none; */
+}
 
 /* UNUSED BELOW HERE */
 
