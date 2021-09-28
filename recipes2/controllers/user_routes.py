@@ -3,10 +3,15 @@ from flask import Blueprint
 from flask import render_template, url_for, flash, redirect, request, abort
 from flask_login import login_user, current_user, logout_user, login_required
 from recipes2 import db, bcrypt
-from recipes2.models.user import User
+from recipes2.models.user import User, Follower
 from recipes2.models.recipe import Recipe
+from recipes2.models.result import Result
 from recipes2.forms.user_forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm
 from recipes2.utils.utils import save_picture, send_reset_email
+
+
+
+
 
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 users = Blueprint('users', __name__)
@@ -53,9 +58,31 @@ def logout():
     return redirect(url_for('main.home'))
 
 
-@users.route('/account', methods=['GET', 'POST'])
+@users.route('/account', methods=['GET'])
 @login_required
 def account():
+
+    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+
+    page = request.args.get('page', 1, type=int)
+    recipes = Recipe.query.filter_by(user_id = current_user.id).order_by(Recipe.created_at.desc()).paginate(page=page, per_page=6)
+
+    page = request.args.get('page', 1, type=int)
+    results = Result.query.filter_by(user_id = current_user.id).order_by(Result.created_at.desc()).paginate(page=page, per_page=6)
+
+    page = request.args.get('page', 1, type=int)
+    followees = Follower.query.filter_by(follower_id = current_user.id).paginate(page=page, per_page=6)
+
+    page = request.args.get('page', 1, type=int)
+    followers = Follower.query.filter_by(followee_id = current_user.id).paginate(page=page, per_page=6)
+
+    return render_template('account.html', title='Account', recipes=recipes, results=results, image_file=image_file, followees=followees, followers=followers)
+
+
+
+@users.route('/account_edit', methods=['GET', 'POST'])
+@login_required
+def account_edit():
     form = UpdateAccountForm()
 
     if request.method == 'GET':
@@ -64,7 +91,7 @@ def account():
         form.username.data      = current_user.username
         form.email.data         = current_user.email
         image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
-        return render_template('account.html', title='Account', image_file=image_file, form=form)
+        return render_template('account_edit.html', title='Account', image_file=image_file, form=form)
     
     elif request.method == "POST":
         if form.validate_on_submit():

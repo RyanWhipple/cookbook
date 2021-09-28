@@ -9,6 +9,12 @@ from flask_login import UserMixin
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+# Follower must be defined first since it is used as part of the definition of a User
+class Follower(db.Model):
+    __tablename__ = "follower"
+    follower_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    followee_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+
 
 class User(db.Model, UserMixin):
     id              = db.Column(db.Integer, primary_key=True)
@@ -28,6 +34,10 @@ class User(db.Model, UserMixin):
     results         = db.relationship(  'Result', backref='user',
                                     cascade="all, delete, delete-orphan", passive_deletes=True
                                     )
+
+    follower_id      = db.relationship('Follower', backref='follower', primaryjoin=id==Follower.follower_id)
+    followee_id      = db.relationship('Follower', backref='followee', primaryjoin=id==Follower.followee_id)
+
 
     def get_reset_token(self, expires_sec=1800):
         s = Serializer(app.config['SECRET_KEY'], expires_sec)

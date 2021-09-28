@@ -4,19 +4,24 @@ from flask_login import current_user, login_required
 from recipes2 import db
 from recipes2.models.recipe import Recipe
 from recipes2.models.result import Result
+from recipes2.models.user import Follower
 from recipes2.forms.recipe_forms import RecipeForm
 from recipes2.forms.result_forms import ResultForm
 from recipes2.utils.utils import save_picture
+from sqlalchemy import delete
+
 
 social_feeds = Blueprint('social_feed', __name__)
 
-@social_feeds.route('/social_feed', methods=['GET', 'POST'])
+@social_feeds.route('/social_feed/', methods=['GET', 'POST'])
 @login_required
 def social_feed():
     
     recipes = Recipe.query.order_by(Recipe.created_at.desc())
     results = Result.query.order_by(Result.created_at.desc())
     
+    print("recipes: ", recipes)
+
     items_to_show = []
     recipe_index = 0
     result_index = 0
@@ -48,3 +53,36 @@ def social_feed():
     print("items_to_show: ", items_to_show)
 
     return render_template('social_feed.html', title='Social_Feed', items_to_show=items_to_show)
+
+
+@social_feeds.route('/social_feed/follow/<int:followee_id>', methods=['GET', 'POST'])
+@login_required
+def follow(followee_id):
+    
+    follower = Follower(follower_id=current_user.id, followee_id=followee_id)
+    db.session.add(follower)
+    db.session.commit()
+    
+    return redirect(url_for('main.home'))
+
+
+@social_feeds.route('/social_feed/unfollow/<int:followee_id>', methods=['GET', 'POST'])
+@login_required
+def unfollow(followee_id):
+    
+    to_delete = Follower.query.filter(Follower.followee_id==followee_id, Follower.follower_id == current_user.id).first()
+    db.session.delete(to_delete)
+    db.session.commit()
+    
+    return redirect(url_for('users.account'))
+
+
+@social_feeds.route('/social_feed/block/<int:follower_id>', methods=['GET', 'POST'])
+@login_required
+def block(follower_id):
+    
+    to_delete = Follower.query.filter(Follower.follower_id==follower_id, Follower.followee_id == current_user.id).first()
+    db.session.delete(to_delete)
+    db.session.commit()
+    
+    return redirect(url_for('users.account'))
