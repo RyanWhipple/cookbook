@@ -17,7 +17,7 @@ EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 users = Blueprint('users', __name__)
 
 
-@users.route('/register', methods=['GET', 'POST'])
+@users.route('/register/', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))
@@ -31,12 +31,13 @@ def register():
                     password        = hashed_password)
         db.session.add(user)
         db.session.commit()
-        flash(f'Your account has been created!  You are now able to log in', 'success')
-        return redirect(url_for('users.login'))
+        flash(f'Your account has been created!', 'success')
+        login_user(user, remember=False)
+        return redirect(url_for('main.home'))
     return render_template('register.html', title='Register', form=form)
 
 
-@users.route("/login", methods=['GET', 'POST'])
+@users.route("/login/", methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))
