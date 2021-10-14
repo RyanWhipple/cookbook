@@ -1,7 +1,6 @@
 $(document).ready(function(){
     $('#picture').change(function(){
         var data = new FormData($('#food_form')[0])
-        // console.log(data)
         $.ajax({
             method:'POST',
             url:'/ajax/image/update/recipe_pics',
@@ -14,4 +13,11 @@ $(document).ready(function(){
             },
         })
     });
+    $("#prep_time,#cook_time").keyup(function(){
+        if(isNaN($(this).val())){
+            $(this).addClass('is-invalid');
+        }else{
+            $(this).removeClass('is-invalid');
+        }
+    })
 });
