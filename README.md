@@ -34,4 +34,5 @@ Wesley Giles is a recent graduate of the Coding Dojo Python Full-Stack Developer
 ## Demo
 
 ### Overview
-Image Coming Soon
+![ezgif com-gif-maker](https://user-images.githubusercontent.com/84366264/137374523-f40d1236-b588-418d-9fb4-57810968c1cd.gif)
+
