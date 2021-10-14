@@ -7,6 +7,7 @@ from recipes2.models.result import Result
 from recipes2.forms.recipe_forms import RecipeForm
 from recipes2.forms.result_forms import ResultForm
 from recipes2.utils.utils import save_picture
+from flask_paginate import Pagination
 
 recipes = Blueprint('recipes', __name__)
 
@@ -95,12 +96,15 @@ def recipe(recipe_id):
     recipe = Recipe.query.get_or_404(recipe_id)
     result_form = ResultForm()
 
-    # page = request.args.get('page', 1, type=int)
-    results = Result.query.order_by(Result.created_at.desc()).paginate(
-        # page=page,
-        per_page=6)
+    page = request.args.get('page', 1, type=int)
+    per_page = 6
+    # offset = (page-1) * per_page # THIS ISN'T REQUIRED WHEN WORKING WITH A PAGINATED QUERY OBJECT INSTEAD OF A LIST
+    results = Result.query.filter_by(recipe_id = recipe_id).order_by(Result.created_at.desc()).paginate(page=page, per_page=per_page)
+    total = Result.query.filter_by(recipe_id = recipe_id).count()
+    pagination = Pagination(page=page, per_page=per_page, total=total,
+                            css_framework='bootstrap4')
 
-    return render_template('recipe_read.html', title=recipe.name, recipe=recipe, result_form = result_form, results=results)
+    return render_template('recipe_read.html', title=recipe.name, recipe=recipe, result_form = result_form, results=results, pagination=pagination)
 
 
 @recipes.route('/recipe/<int:recipe_id>/delete', methods=['POST'])

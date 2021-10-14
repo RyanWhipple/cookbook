@@ -6,9 +6,8 @@
 <div class="container rounded-3">
     <div class="album">
         <div class="container">
-    
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
-            
+                <!-- Recipe Album -->
                 {% for recipe in recipes.items %}
                 <div class="col">
                     <div class="card shadow-sm">
@@ -28,7 +27,25 @@
                     </div>
                 </div>
                 {% endfor %}
-            
+            </div>
+        </div>
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col d-flex justify-content-center">
+                    <!-- Pagination Links -->
+                    <!-- {% for page_num in recipes.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                        {% if page_num %}
+                            {% if recipes.page == page_num %}
+                                <a class="btn btn-secondary mb-4 mx-1" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
+                            {% else %}
+                                <a class="btn btn-outline-secondary mb-4 mx-1" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
+                            {% endif %}
+                        {% else %}
+                            ...
+                        {% endif %}
+                    {% endfor %} -->
+                    {{ pagination.links }}
+                </div>
             </div>
         </div>
     </div>
