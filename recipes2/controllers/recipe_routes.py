@@ -31,6 +31,7 @@ def new_recipe():
                             prep_time           = form.prep_time.data,
                             cook_time           = form.cook_time.data,
                             image_file          = picture_file,
+                            public              = 1 if form.public.data else 0,
                             ingredients         = form.ingredients.data,
                             instructions        = form.instructions.data,
                             notes               = form.notes.data,
@@ -76,7 +77,7 @@ def update_recipe(recipe_id):
             if form.picture.data:
                 picture_file = save_picture(form.picture.data, "recipe_pics/")
                 recipe.image_file = picture_file
-            
+            recipe.public       = 1 if form.public.data else 0
             recipe.ingredients  = form.ingredients.data
             recipe.instructions = form.instructions.data
             recipe.notes        = form.notes.data

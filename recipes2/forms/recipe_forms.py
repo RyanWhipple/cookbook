@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, SubmitField, TextAreaField
+from wtforms import StringField, SubmitField, TextAreaField, BooleanField
 from wtforms.validators import DataRequired, ValidationError
 
 class RecipeForm(FlaskForm):
@@ -12,6 +12,7 @@ class RecipeForm(FlaskForm):
     ingredients         = TextAreaField('Ingredients', validators=[DataRequired()], render_kw={"rows": 10})
     instructions        = TextAreaField('Instructions', validators=[DataRequired()], render_kw={"rows": 10})
     notes               = TextAreaField('Notes', validators=[DataRequired()], render_kw={"rows": 5})
+    public              = BooleanField('Public',default="checked")
     submit              = SubmitField('Submit')
 
     def validate_prep_time(self, prep_time):
