@@ -25,10 +25,10 @@ def social_feed():
     items_to_show = []
     recipe_index = 0
     result_index = 0
-    recipes_left = True
-    results_left = True
     num_of_recipes = recipes.count()
     num_of_results = results.count()
+    recipes_left = num_of_recipes > 0
+    results_left = num_of_results > 0
     
 
     

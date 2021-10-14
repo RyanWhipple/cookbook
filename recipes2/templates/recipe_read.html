@@ -44,13 +44,21 @@
                         </div>
                     </div>
                     <!-- Update and Delete / Follow -->
-                    {% if recipe.user == current_user %}
-                        <div>
-                            <a class="btn btn-secondary btn-sm m-1" href="{{ url_for('recipes.update_recipe', recipe_id=recipe.id) }}">Update</a>
-                            <button type="button" class="btn btn-danger btn-sm m-1" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
-                        </div>
+                    {% if current_user.id %}
+                        {% if current_user == recipe.user%}
+                            <div>
+                                <a class="btn btn-secondary btn-sm m-1" href="{{ url_for('recipes.update_recipe', recipe_id=recipe.id) }}">Update</a>
+                                <button type="button" class="btn btn-danger btn-sm m-1" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+                            </div>
+                        {% else %}
+                            {% for follower in current_user.follower_id if follower in recipe.user.followee_id %}
+                            <a class="btn btn-danger btn-sm m-1" href="{{ url_for('social_feed.unfollow', followee_id=recipe.user_id) }}">Unfollow this user</a>
+                            {% else %}
+                            <a class="btn btn-secondary btn-sm m-1" href="{{ url_for('social_feed.follow', followee_id=recipe.user_id) }}">Follow this user</a>
+                            {% endfor %}
+                        {% endif %}
                     {% else %}
-                        <a class="btn btn-secondary btn-sm m-1" href="{{ url_for('social_feed.follow', followee_id=recipe.user_id) }}">Follow this user</a>
+                            <a class="btn btn-secondary btn-sm m-1" href="{{ url_for('users.login') }}">Log In to Follow this user</a>
                     {% endif %}
                 </div>
             </div>
