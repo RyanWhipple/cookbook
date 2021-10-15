@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <div class="container rounded-3">
+        <div class="album">
+            <h1 class="p-3">Recipes by {{ user.first_name }} {{user.last_name }} ({{ recipes.total }})</h1>
+            <div class="container">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+                    <!-- Recipe Album -->
+                    {% for recipe in recipes.items %}
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <img src="{{ url_for('static', filename='recipe_pics/' + recipe.image_file) }}" class="card-img-top">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ recipe.name }}</h5>
+                                <p class="card-text">{{ recipe.description }}</p>
+                            </div>
+                            <div class="card-footer">
+                                <div class="btn-group">
+                                    <a class="btn btn-sm btn-outline-secondary" href="{{url_for('recipes.recipe', recipe_id=recipe.id) }}">View</a>
+                                    {% if recipe.user == current_user %}
+                                        <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('recipes.update_recipe', recipe_id=recipe.id) }}">Edit</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col d-flex justify-content-center">
+                        <!-- Pagination Links -->
+                        <!-- {% for page_num in recipes.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                            {% if page_num %}
+                                {% if recipes.page == page_num %}
+                                    <a class="btn btn-secondary mb-4 mx-1" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
+                                {% else %}
+                                    <a class="btn btn-outline-secondary mb-4 mx-1" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
+                                {% endif %}
+                            {% else %}
+                                ...
+                            {% endif %}
+                        {% endfor %} -->
+                        {{ pagination.links }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
