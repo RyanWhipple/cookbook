@@ -10,12 +10,19 @@ from recipes2.forms.result_forms import ResultForm
 from recipes2.utils.utils import save_picture
 from sqlalchemy import delete
 
+from flask_paginate import Pagination, get_page_parameter
+from sqlalchemy import create_engine
+
 
 social_feeds = Blueprint('social_feed', __name__)
 
+
+# See https://gist.github.com/mozillazg/69fb40067ae6d80386e10e105e6803c9
+# See https://pythonhosted.org/Flask-paginate/
 @social_feeds.route('/social_feed/', methods=['GET', 'POST'])
 @login_required
 def social_feed():
+    
     
     recipes = Recipe.query.order_by(Recipe.created_at.desc())
     results = Result.query.order_by(Result.created_at.desc())
@@ -30,10 +37,7 @@ def social_feed():
     recipes_left = num_of_recipes > 0
     results_left = num_of_results > 0
     
-
-    
-
-    while len(items_to_show) < 24:
+    while len(items_to_show) < 10:
         if results_left and results[result_index].created_at > recipes[recipe_index].created_at:
             items_to_show.append([results[result_index], "result"])
             result_index += 1
@@ -50,9 +54,24 @@ def social_feed():
             print("Ran out of both results and recipes!")
             break
 
-    print("items_to_show: ", items_to_show)
+    page = request.args.get(get_page_parameter(), type=int, default=1)
+    per_page = 5
+    offset = (page-1) * per_page
+    total = len(items_to_show)
+    pagination = Pagination(page=page, per_page=per_page, total=total,
+                            css_framework='bootstrap4')
 
-    return render_template('social_feed.html', title='Social_Feed', items_to_show=items_to_show)
+    items_to_show = items_to_show[offset : offset + per_page]
+
+    
+    
+    return render_template('social_feed.html',
+                            items_to_show = items_to_show,
+                            page=page,
+                            per_page=per_page,
+                            pagination=pagination,
+                            title="Social Feed"
+                            )
 
 
 @social_feeds.route('/social_feed/follow/<int:followee_id>', methods=['GET', 'POST'])

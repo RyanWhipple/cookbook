@@ -8,7 +8,7 @@ from recipes2.models.recipe import Recipe
 from recipes2.models.result import Result
 from recipes2.forms.user_forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm
 from recipes2.utils.utils import save_picture, send_reset_email
-
+from flask_paginate import Pagination
 
 
 
@@ -65,19 +65,11 @@ def account():
 
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
 
-    page = request.args.get('page', 1, type=int)
-    recipes = Recipe.query.filter_by(user_id = current_user.id).order_by(Recipe.created_at.desc()).paginate(page=page, per_page=6)
-
-    page = request.args.get('page', 1, type=int)
-    results = Result.query.filter_by(user_id = current_user.id).order_by(Result.created_at.desc()).paginate(page=page, per_page=6)
-
-    page = request.args.get('page', 1, type=int)
     followees = Follower.query.filter_by(follower_id = current_user.id).paginate(page=page, per_page=6)
 
-    page = request.args.get('page', 1, type=int)
     followers = Follower.query.filter_by(followee_id = current_user.id).paginate(page=page, per_page=6)
 
-    return render_template('account.html', title='Account', recipes=recipes, results=results, image_file=image_file, followees=followees, followers=followers)
+    return render_template('account.html', title='Account', image_file=image_file, followees=followees, followers=followers)
 
 
 
@@ -108,16 +100,41 @@ def account_edit():
             return redirect(url_for('users.account'))
     
 
-
-@users.route('/user/<string:username>')
+# My Recipes
+@users.route('/user/<string:username>/recipes')
 def user_recipes(username):
     page = request.args.get('page', 1, type=int)
+    per_page = 6
+    # offset = (page-1) * per_page THIS ISN'T REQUIRED WHEN WORKING WITH A PAGINATED QUERY OBJECT INSTEAD OF A LIST
     user = User.query.filter_by(username=username).first_or_404()
     recipes = Recipe.query\
-        .filter_by(author=user)\
-        .order_by(Recipe.date_posted.desc())\
-        .paginate(page=page, per_page=5)
-    return render_template('user_recipes.html', title='Home', recipes=recipes, user=user)
+                .filter_by(user=user)\
+                .order_by(Recipe.created_at.desc())\
+                .paginate(page=page, per_page=per_page)
+    total = Recipe.query.filter_by(user=user).count()
+    pagination = Pagination(page=page, per_page=per_page, total=total,
+                            css_framework='bootstrap4')
+
+    return render_template('user_recipes.html', title='Home', recipes=recipes, user=user, pagination=pagination)
+
+
+# My Results
+@users.route('/user/<string:username>/results')
+def user_results(username):
+    page = request.args.get('page', 1, type=int)
+    per_page = 6
+    # offset = (page-1) * per_page THIS ISN'T REQUIRED WHEN WORKING WITH A PAGINATED QUERY OBJECT INSTEAD OF A LIST
+    user = User.query.filter_by(username=username).first_or_404()
+    results = Result.query\
+                .filter_by(user=user)\
+                .order_by(Result.created_at.desc())\
+                .paginate(page=page, per_page=6)
+    total = Result.query.filter_by(user=user).count()
+    pagination = Pagination(page=page, per_page=per_page, total=total,
+                            css_framework='bootstrap4')
+
+    return render_template('user_results.html', title='Home', results=results, user=user, pagination = pagination)
+
 
 @users.route('/user/<int:user_id>/delete', methods=['POST'])
 @login_required

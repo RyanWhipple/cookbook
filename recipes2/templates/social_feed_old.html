@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    
+<div class="container col-lg-4 col-md-8 col-sm-12 rounded-3 px-3">
+    <div class="album">
+        <div class="container col-12">
+    
+            <div class="row row-cols-1 g-4">
+            
+                {% for item in items_to_show %}
+                    {% if item[1] == "recipe" %}
+                        <div class="col">
+                            <div class="card shadow-sm">
+                                <div class="bg-light pt-3 px-3 rounded-top">
+                                    <b>{{ item[0].user.first_name }} {{ item[0].user.last_name }} contributed a Recipe:</b>
+                                    <p>{{ item[0].created_at.strftime('%B %d') }}{{ item[0].created_at.strftime('%d')|ordinal_date }}</p>
+                                </div>
+                                <img src="{{ url_for('static', filename='recipe_pics/' + item[0].image_file) }}" class="card-img-top">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ item[0].name }}</h5>
+                                    <p class="card-text">{{ item[0].description }}</p>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="btn-group">
+                                        <a class="btn btn-sm btn-outline-secondary" href="{{url_for('recipes.recipe', recipe_id=item[0].id) }}">View</a>
+                                        {% if item[0].user == current_user %}
+                                            <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('recipes.update_recipe', recipe_id=item[0].id) }}">Edit</a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% elif item[1] == "result" %}
+                        <div class="col">
+                            <div class="card shadow-sm">
+                                <div class="bg-light pt-3 px-3 rounded-top">
+                                    <b>{{ item[0].user.first_name }} {{ item[0].user.last_name }} contributed a Result:</b>
+                                    <p>{{ item[0].created_at.strftime('%B %d') }}{{ item[0].created_at.strftime('%d')|ordinal_date }}</p>
+                                </div>
+                                <img src="{{ url_for('static', filename='result_pics/' + item[0].image_file) }}" class="card-img-top">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ item[0].recipe.name }}</h5>
+                                    <p class="card-text">{{ item[0].snippet }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+{% endblock content %}
+
+
+
+
+
+
+
