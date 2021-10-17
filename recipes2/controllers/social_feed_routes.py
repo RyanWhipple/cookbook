@@ -1,7 +1,9 @@
+import re
 from flask import Blueprint
 from flask import render_template, url_for, flash, redirect, request, abort
 from flask_login import current_user, login_required
 from recipes2 import db
+import recipes2
 from recipes2.models.recipe import Recipe
 from recipes2.models.result import Result
 from recipes2.models.user import Follower
@@ -24,10 +26,15 @@ social_feeds = Blueprint('social_feed', __name__)
 def social_feed():
     
     
-    recipes = Recipe.query.order_by(Recipe.created_at.desc())
-    results = Result.query.order_by(Result.created_at.desc())
+    recipes = Recipe.query.order_by(Recipe.created_at.desc()).filter_by(public=1)
+    results = Result.query.order_by(Result.created_at.desc()).filter(Result.recipe_id.in_([recipe.id for recipe in recipes]))
+    following = [ _.followee_id for _ in current_user.follower_id]
+    # print("recipes: ", recipes)
+    result_list = [ _ for _ in recipes]+[ _ for _ in results]
+    result_list.sort(key=lambda x: x.created_at, reverse=True)
+    print(result_list)
     
-    print("recipes: ", recipes)
+
 
     items_to_show = []
     recipe_index = 0
