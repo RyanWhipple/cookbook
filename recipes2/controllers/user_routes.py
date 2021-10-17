@@ -65,12 +65,11 @@ def account():
 
     page = request.args.get('page', 1, type=int)
     per_page = 6
-    
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
 
-    followees = Follower.query.filter_by(follower_id = current_user.id).paginate(page=page, per_page=6)
+    followees = Follower.query.filter_by(follower_id = current_user.id).paginate(page=page, per_page=per_page)
 
-    followers = Follower.query.filter_by(followee_id = current_user.id).paginate(page=page, per_page=6)
+    followers = Follower.query.filter_by(followee_id = current_user.id).paginate(page=page, per_page=per_page)
 
     return render_template('account.html', title='Account', image_file=image_file, followees=followees, followers=followers)
 
