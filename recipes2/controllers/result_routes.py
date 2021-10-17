@@ -47,3 +47,4 @@ def create_result(recipe_id):
         return render_template('partials/result.html',result = result)
     else:
         print("new_recipe form.validate_on_submit() failed")
+        return ""

@@ -63,6 +63,9 @@ def logout():
 @login_required
 def account():
 
+    page = request.args.get('page', 1, type=int)
+    per_page = 6
+    
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
 
     followees = Follower.query.filter_by(follower_id = current_user.id).paginate(page=page, per_page=6)
