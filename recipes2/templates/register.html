@@ -3,7 +3,7 @@
 <script src="{{url_for('static',filename='js/ajax/user_form.js')}}" type="text/javascript"></script>
 {% endblock %}
 {% block content %}
-    <div class="container bg-secondary rounded-3 py-3">
+    <div class="container bg-white rounded-3 py-3">
         <form method="POST" action="" id="regform">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
@@ -98,7 +98,7 @@
                 </div>
             </fieldset>
             <div class="form-group pt-3">
-                {{ form.submit(class="btn btn-outline-info") }}
+                {{ form.submit(class="btn btn-primary") }}
             </div>
         </form>
         <div class="border-top pt-3 mt-3">

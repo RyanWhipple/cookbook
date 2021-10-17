@@ -8,6 +8,7 @@ from recipes2.utils.utils import save_picture
 
 results = Blueprint('results', __name__)
 
+# Route is no longer used, superceded by AJAX-based create_result()
 @results.route('/recipe/<int:recipe_id>/result/new', methods=['GET', 'POST'])
 @login_required
 def new_result(recipe_id):
@@ -27,10 +28,9 @@ def new_result(recipe_id):
             db.session.add(result)
             db.session.commit()
             flash('Your result has been created!','success')
-            return redirect(f'/recipe/{recipe_id}')
+            return redirect (url_for('recipes.recipe', recipe_id=recipe_id))
         else:
             print("new_recipe form.validate_on_submit() failed")
-#             # return render_template('recipe_create_update.html', title='New Recipe', form=form, legend='New Recipe')
 
 @results.route('/recipe/<int:recipe_id>/ajax/results/create', methods=['POST'])
 def create_result(recipe_id):
