@@ -10,39 +10,44 @@
                 <div class="row row-cols-1 g-4">
             
                     {% for item in items_to_show %}
-                        {% if item[1] == "recipe" %}
+                        {% if item.__class__.__name__ == "Recipe" %}
                             <div class="col">
                                 <div class="card shadow-sm">
                                     <div class="bg-light pt-3 px-3 rounded-top">
-                                        <b>{{ item[0].user.first_name }} {{ item[0].user.last_name }} contributed a Recipe:</b>
-                                        <p>{{ item[0].created_at.strftime('%B %d') }}{{ item[0].created_at.strftime('%d')|ordinal_date }}</p>
+                                        <b>{{ item.user.first_name }} {{ item.user.last_name }} contributed a Recipe:</b>
+                                        <p>{{ item.created_at.strftime('%B %d') }}{{ item.created_at.strftime('%d')|ordinal_date }}</p>
                                     </div>
-                                    <img src="{{ url_for('static', filename='recipe_pics/' + item[0].image_file) }}" class="card-img-top">
+                                    <img src="{{ url_for('static', filename='recipe_pics/' + item.image_file) }}" class="card-img-top">
                                     <div class="card-body">
-                                        <h5 class="card-title">{{ item[0].name }}</h5>
-                                        <p class="card-text">{{ item[0].description }}</p>
+                                        <h5 class="card-title">{{ item.name }}</h5>
+                                        <p class="card-text">{{ item.description }}</p>
                                     </div>
                                     <div class="card-footer">
                                         <div class="btn-group">
-                                            <a class="btn btn-sm btn-outline-secondary" href="{{url_for('recipes.recipe', recipe_id=item[0].id) }}">View</a>
-                                            {% if item[0].user == current_user %}
-                                                <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('recipes.update_recipe', recipe_id=item[0].id) }}">Edit</a>
+                                            <a class="btn btn-sm btn-outline-secondary" href="{{url_for('recipes.recipe', recipe_id=item.id) }}">View</a>
+                                            {% if item.user == current_user %}
+                                                <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('recipes.update_recipe', recipe_id=item.id) }}">Edit</a>
                                             {% endif %}
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        {% elif item[1] == "result" %}
+                        {% elif item.__class__.__name__ == "Result" %}
                             <div class="col">
                                 <div class="card shadow-sm">
                                     <div class="bg-light pt-3 px-3 rounded-top">
-                                        <b>{{ item[0].user.first_name }} {{ item[0].user.last_name }} contributed a Result:</b>
-                                        <p>{{ item[0].created_at.strftime('%B %d') }}{{ item[0].created_at.strftime('%d')|ordinal_date }}</p>
+                                        <b>{{ item.user.first_name }} {{ item.user.last_name }} contributed a Result:</b>
+                                        <p>{{ item.created_at.strftime('%B %d') }}{{ item.created_at.strftime('%d')|ordinal_date }}</p>
                                     </div>
-                                    <img src="{{ url_for('static', filename='result_pics/' + item[0].image_file) }}" class="card-img-top">
+                                    <img src="{{ url_for('static', filename='result_pics/' + item.image_file) }}" class="card-img-top">
                                     <div class="card-body">
-                                        <h5 class="card-title">{{ item[0].recipe.name }}</h5>
-                                        <p class="card-text">{{ item[0].snippet }}</p>
+                                        <h5 class="card-title">{{ item.recipe.name }}</h5>
+                                        <p class="card-text">{{ item.snippet }}</p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="btn-group">
+                                            <a class="btn btn-sm btn-outline-secondary" href="{{url_for('recipes.recipe', recipe_id=item.recipe_id) }}">View Recipe</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
