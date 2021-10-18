@@ -19,7 +19,7 @@ def newline_to_br(context, value: str) -> str:
 @custom_template_filters.app_template_filter()
 def ordinal_date(context, value: str) -> str:
     
-    print("value: ", value)
+    # print("value: ", value)
 
     date_suffix = ["th", "st", "nd", "rd"]
 

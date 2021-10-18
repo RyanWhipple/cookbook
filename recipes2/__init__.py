@@ -52,6 +52,8 @@ app.register_blueprint(social_feeds)
 from recipes2.utils.custom_template_filters import custom_template_filters
 app.register_blueprint(custom_template_filters)
 
+from recipes2.controllers.searchbar_routes import searchbar
+app.register_blueprint(searchbar)
 
 # SQLite code
 # This code block is necessary to make ondelete="cascade" work

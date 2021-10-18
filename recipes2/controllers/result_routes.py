@@ -20,6 +20,8 @@ def new_result(recipe_id):
             
             if form.picture.data:
                 picture_file = save_picture(form.picture.data, "result_pics/")
+            else:
+                picture_file = "default_result.jpg"
             
             result = Result(image_file          = picture_file,
                             snippet             = form.snippet.data,
@@ -47,3 +49,4 @@ def create_result(recipe_id):
         return render_template('partials/result.html',result = result)
     else:
         print("new_recipe form.validate_on_submit() failed")
+        return ""
