@@ -26,6 +26,8 @@ def new_recipe():
             
             if form.picture.data:
                 picture_file = save_picture(form.picture.data, "recipe_pics/")
+            else:
+                picture_file = "default_food.png"
             
             recipe = Recipe(name                = form.name.data,
                             description         = form.description.data,
