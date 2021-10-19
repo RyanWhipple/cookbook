@@ -59,7 +59,6 @@ def ajax_search():
         filtered.sort(key=lambda x: 0 if x.user_id in following else 1)
     # pagination was copied and pasted from social feed
     page = request.args.get(get_page_parameter(), type=int, default=1)
-    print(page)
     per_page = 6
     offset = (page-1) * per_page
     total = len(filtered)
