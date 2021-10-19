@@ -1,4 +1,4 @@
-# Recipes
+# CookBook
 
 ## Features
 - Create recipes, complete with photo, ingredients, directions, notes
