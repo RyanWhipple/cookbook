@@ -48,7 +48,7 @@
                                     </div>
                                     <div class="col-8">
                                         <br>
-                                        <a href="{{ url_for('users.account', user_id=followee.followee_id) }}"><h5 class="card-title">{{ followee.followee.first_name }} {{ followee.followee.last_name }}</h5></a>
+                                        <a href="{{ url_for('users.user_recipes', username=followee.followee.username) }}"><h5 class="card-title">{{ followee.followee.first_name }} {{ followee.followee.last_name }}</h5></a>
                                         <a class="btn btn-danger btn-sm m-1" href="{{ url_for('social_feed.unfollow', followee_id=followee.followee_id) }}">Unfollow this user</a>
                                     </div>
                                 </div>
@@ -77,7 +77,7 @@
                                     </div>
                                     <div class="col-8">
                                         <br>
-                                        <a href="{{ url_for('users.account', user_id=follower.follower_id) }}"><h5 class="card-title">{{ follower.follower.first_name }} {{ follower.follower.last_name }}</h5></a>
+                                        <a href="{{ url_for('users.user_recipes', username=follower.follower.username) }}"><h5 class="card-title">{{ follower.follower.first_name }} {{ follower.follower.last_name }}</h5></a>
                                         <a class="btn btn-danger btn-sm m-1" href="{{ url_for('social_feed.block', follower_id=follower.follower_id) }}">Block this user</a>
                                     </div>
                                 </div>
