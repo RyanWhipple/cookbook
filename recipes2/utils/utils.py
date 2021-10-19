@@ -5,6 +5,7 @@ from flask import url_for, current_app
 from flask_mail import Message
 from recipes2 import mail
 
+output_size = (500,500)
 
 def save_picture(form_picture, folder):
     random_hex = secrets.token_hex(8)
@@ -14,9 +15,9 @@ def save_picture(form_picture, folder):
     duplicate = check_for_duplicate(form_picture,os.path.join(current_app.root_path, f'static/{folder}'))
     if duplicate:
         return duplicate
-    output_size = (125, 125)
     i = Image.open(form_picture)
-    i.thumbnail=output_size
+    i.thumbnail(output_size, Image.ANTIALIAS)
+    i=crop_center(i,output_size)
     i.save(picture_path)
     return(picture_fn)
 
@@ -34,6 +35,8 @@ If you did not make this request please ignore this email and no changes will be
 
 def check_for_duplicate(picture,folder):
     new_image = Image.open(picture)
+    new_image.thumbnail(output_size,Image.ANTIALIAS)
+    new_image=crop_center(new_image,output_size)
     pix_mean1 = ImageStat.Stat(new_image).mean
     images = [ _ for _ in os.listdir(folder)]
     for pic in images:
@@ -43,3 +46,10 @@ def check_for_duplicate(picture,folder):
         if pix_mean1 == pix_mean2:
             return pic
     return False
+
+def crop_center(pil_img, crop_size):
+    img_width, img_height = pil_img.size
+    return pil_img.crop(((img_width - crop_size[0]) // 2,
+                            (img_height - crop_size[1]) // 2,
+                            (img_width + crop_size[0]) // 2,
+                            (img_height + crop_size[1]) // 2))
