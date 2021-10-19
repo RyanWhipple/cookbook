@@ -22,7 +22,7 @@
         {% if title %}
             {{ title }}
         {% else %}
-            CookBook
+            Cook's Book
         {% endif %}
     </title>
 </head>
@@ -33,13 +33,13 @@
     <header class="site-header">
         <nav class="navbar navbar-expand-md navbar-dark fixed-top">
             <div class="container">
-                <a class="navbar-brand mr-4" href="/">CookBook</a>
+                <a class="navbar-brand mr-4" href="/">Cook's Book</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarToggle">
                     <div class="navbar-nav me-auto">
-                            <a class="nav-item nav-link" href="{{ url_for('main.home') }}">CookBook</a>
+                            <a class="nav-item nav-link" href="{{ url_for('main.home') }}">Recipes</a>
                             <a class="nav-item nav-link" href="{{ url_for('social_feed.social_feed') }}">Social Feed</a>
                             <a class="nav-item nav-link" href="{{ url_for('main.about') }}">About</a>
                     </div>
@@ -88,7 +88,7 @@
           <p class="float-end mb-1">
             <a href="#">Back to top</a>
           </p>
-          <p class="mb-1">CookBook © Wesley & Ryan, inc.</p>
+          <p class="mb-1">Cook's Book © Wesley & Ryan, inc.</p>
           <p class="mb-0">Like our work? Visit <a href="#">Wesley's homepage</a> or <a href="https://ryanwhipple.github.io">Ryan's homepage</a> to learn more.</p>
         </div>
       </footer>
