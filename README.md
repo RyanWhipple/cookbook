@@ -6,13 +6,9 @@
 - Activity feed shows the last several recipes and results posted
 - Ability to follow other users and see who is following you
 - User profile shows albums of the users results and recipes
-
-## Coming Soon
 - Privacy and relevance filters:
--- Filter by posts by users you're following to make results more relevant
+-- Filter posts by users you're following to make results more relevant
 -- Keep your posts public or restrict visibility to followers
--- Go one step further and make your recipes & results completely private, making the app into a personal cookbook
-- New and improved layouts to better support both the social media experience and the personal cookbook experience
 
 ## Tech Stack
 - **Front End:** HTML, CSS, Jinja
@@ -34,5 +30,5 @@ Wesley Giles is a recent graduate of the Coding Dojo Python Full-Stack Developer
 ## Demo
 
 ### Overview
-![ezgif com-gif-maker](https://user-images.githubusercontent.com/84366264/137374523-f40d1236-b588-418d-9fb4-57810968c1cd.gif)
+Coming Soon!
 
