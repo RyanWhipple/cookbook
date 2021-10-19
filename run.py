@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+load_dotenv()
 from recipes2 import app
 
 # Setting up for multiple configs
