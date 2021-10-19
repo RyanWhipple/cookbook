@@ -22,7 +22,7 @@
         {% if title %}
             {{ title }}
         {% else %}
-            Recipes
+            CookBook
         {% endif %}
     </title>
 </head>
@@ -39,7 +39,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarToggle">
                     <div class="navbar-nav me-auto">
-                            <a class="nav-item nav-link" href="{{ url_for('main.home') }}">Recipes</a>
+                            <a class="nav-item nav-link" href="{{ url_for('main.home') }}">CookBook</a>
                             <a class="nav-item nav-link" href="{{ url_for('social_feed.social_feed') }}">Social Feed</a>
                             <a class="nav-item nav-link" href="{{ url_for('main.about') }}">About</a>
                     </div>
@@ -88,7 +88,7 @@
           <p class="float-end mb-1">
             <a href="#">Back to top</a>
           </p>
-          <p class="mb-1">Recipes © Wesley & Ryan, inc.</p>
+          <p class="mb-1">CookBook © Wesley & Ryan, inc.</p>
           <p class="mb-0">Like our work? Visit <a href="#">Wesley's homepage</a> or <a href="https://ryanwhipple.github.io">Ryan's homepage</a> to learn more.</p>
         </div>
       </footer>
