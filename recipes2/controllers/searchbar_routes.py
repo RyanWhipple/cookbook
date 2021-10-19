@@ -18,7 +18,7 @@ def search():
     list(Recipe.query.filter(Recipe.ingredients.like(search_by))) +\
     list(Recipe.query.filter(Recipe.instructions.like(search_by)))
     # get only public recipes
-    filtered = list(filter(lambda result: result.public == 1, results))
+    filtered = list(filter(lambda result: result.public == 1 or (current_user.is_authenticated and current_user.id == result.user_id), results))
     # remove duplicates from list
     filtered = list(set(filtered))
     #if user is logged in show the recipes of users they are following first
@@ -27,7 +27,7 @@ def search():
         filtered.sort(key=lambda x: 0 if x.user_id in following else 1)
     # pagination was copied and pasted from social feed
     page = request.args.get(get_page_parameter(), type=int, default=1)
-    per_page = 12
+    per_page = 6
     offset = (page-1) * per_page
     total = len(filtered)
     pagination = Pagination(page=page, per_page=per_page, total=total,
@@ -37,7 +37,8 @@ def search():
                             page=page,
                             per_page=per_page,
                             pagination=pagination,
-                            title="Search Recipes")
+                            title="Search Recipes",
+                            query=search_query)
 
 @searchbar.route('/ajax/search', methods=["GET"])
 def ajax_search():
@@ -58,13 +59,15 @@ def ajax_search():
         filtered.sort(key=lambda x: 0 if x.user_id in following else 1)
     # pagination was copied and pasted from social feed
     page = request.args.get(get_page_parameter(), type=int, default=1)
-    per_page = 12
+    print(page)
+    per_page = 6
     offset = (page-1) * per_page
     total = len(filtered)
     pagination = Pagination(page=page, per_page=per_page, total=total,
-                            css_framework='bootstrap4')
+                            css_framework='bootstrap4',href=f"/search?q={search_query}&page={'{0}'}")
     filtered = filtered[offset : offset + per_page]
     return render_template("partials/search.html",recipes=filtered,
                             page=page,
                             per_page=per_page,
-                            pagination=pagination)
+                            pagination=pagination
+                            )

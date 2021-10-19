@@ -4,7 +4,7 @@
 {% endblock %}
 {% block content %}
 <div class="container">
-    <input type="text" name="q" id="q" class="form-control form-control-lg my-1" placeholder="Search Recipes">
+    <input type="text" name="q" id="q" class="form-control form-control-lg my-1" placeholder="Search Recipes"{% if query %} value="{{query}}" {% endif %}>
 </div>
 <div class="container rounded-3" " id="results_div">
     <div class="album">
