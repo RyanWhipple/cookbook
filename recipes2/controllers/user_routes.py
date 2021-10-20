@@ -8,6 +8,7 @@ from recipes2.models.recipe import Recipe
 from recipes2.models.result import Result
 from recipes2.forms.user_forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm
 from recipes2.utils.utils import save_picture, send_reset_email
+from sqlalchemy import or_
 from flask_paginate import Pagination
 
 
@@ -110,10 +111,11 @@ def user_recipes(username):
     # offset = (page-1) * per_page THIS ISN'T REQUIRED WHEN WORKING WITH A PAGINATED QUERY OBJECT INSTEAD OF A LIST
     user = User.query.filter_by(username=username).first_or_404()
     recipes = Recipe.query\
+                .filter(or_(Recipe.public==1,(current_user.is_authenticated and Recipe.user == current_user)))\
                 .filter_by(user=user)\
                 .order_by(Recipe.created_at.desc())\
                 .paginate(page=page, per_page=per_page)
-    total = Recipe.query.filter_by(user=user).count()
+    total = Recipe.query.filter(or_(Recipe.public==1,(current_user.is_authenticated and Recipe.user == current_user))).filter_by(user=user).count()
     pagination = Pagination(page=page, per_page=per_page, total=total,
                             css_framework='bootstrap4')
 
