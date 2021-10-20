@@ -97,7 +97,8 @@ def update_recipe(recipe_id):
 def recipe(recipe_id):
     recipe = Recipe.query.get_or_404(recipe_id)
     result_form = ResultForm()
-
+    if recipe.public == 0 and recipe.user != current_user:
+        abort(403)
     page = request.args.get('page', 1, type=int)
     per_page = 6
     # offset = (page-1) * per_page # THIS ISN'T REQUIRED WHEN WORKING WITH A PAGINATED QUERY OBJECT INSTEAD OF A LIST
