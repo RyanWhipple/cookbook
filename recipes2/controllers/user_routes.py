@@ -130,10 +130,13 @@ def user_results(username):
     # offset = (page-1) * per_page THIS ISN'T REQUIRED WHEN WORKING WITH A PAGINATED QUERY OBJECT INSTEAD OF A LIST
     user = User.query.filter_by(username=username).first_or_404()
     results = Result.query\
+                .filter(or_(Result.recipe_id.in_([recipe.id for recipe in Recipe.query.filter_by(public=1)]),(current_user.is_authenticated and Result.user_id == current_user.id)))\
                 .filter_by(user=user)\
                 .order_by(Result.created_at.desc())\
                 .paginate(page=page, per_page=6)
-    total = Result.query.filter_by(user=user).count()
+    total = Result.query\
+                .filter(or_(Result.recipe_id.in_([recipe.id for recipe in Recipe.query.filter_by(public=1)]),(current_user.is_authenticated and Result.user_id == current_user.id)))\
+                .filter_by(user=user).count()
     pagination = Pagination(page=page, per_page=per_page, total=total,
                             css_framework='bootstrap4')
 
