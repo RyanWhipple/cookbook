@@ -2,6 +2,7 @@ from datetime import datetime
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from recipes2 import db, login_manager
 from flask import app
+import os
 # from flask import current_app
 from flask_login import UserMixin
 
@@ -40,7 +41,7 @@ class User(db.Model, UserMixin):
 
 
     def get_reset_token(self, expires_sec=1800):
-        s = Serializer(app.config['SECRET_KEY'], expires_sec)
+        s = Serializer(os.environ['SECRET_KEY'], expires_sec)
         # s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
         return s.dumps({'user_id': self.id}).decode('utf-8')
 

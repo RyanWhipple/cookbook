@@ -18,12 +18,15 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['SQLALCHEMY_DATABASE_URI']
 
 
 # iCloud Email
-app.config['MAIL_SERVER'] = 'smtp.mail.me.com'
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USERNAME'] = os.environ['EMAIL_USER']
-app.config['MAIL_PASSWORD'] = os.environ['EMAIL_PASS']
-
+mail_settings={
+    'MAIL_SERVER':'smtp.gmail.com',
+    'MAIL_USE_TLS':False,
+    'MAIL_USE_SLL':True,
+    'MAIL_PORT':465,
+    'MAIL_USERNAME':os.environ['EMAIL_USER'],
+    'MAIL_PASSWORD':os.environ['EMAIL_PASS']
+}
+app.config.update(mail_settings)
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
