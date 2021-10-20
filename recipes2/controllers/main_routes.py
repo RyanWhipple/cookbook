@@ -17,7 +17,7 @@ def home():
     per_page = 6
     # offset = (page-1) * per_page # THIS ISN'T REQUIRED WHEN WORKING WITH A PAGINATED QUERY OBJECT INSTEAD OF A LIST
     recipes = Recipe.query.order_by(Recipe.created_at.desc()).filter(or_(Recipe.public==1,(current_user.is_authenticated and Recipe.user == current_user))).paginate(page=page, per_page=per_page)
-    total = Recipe.query.count()
+    total = Recipe.query.filter(or_(Recipe.public==1,(current_user.is_authenticated and Recipe.user == current_user))).count()
     pagination = Pagination(page=page, per_page=per_page, total=total,
                             css_framework='bootstrap4')
 
