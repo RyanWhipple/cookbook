@@ -4,7 +4,18 @@
 
     <div class="container rounded-3">
         <div class="album">
-            <h1 class="p-3">Recipes by {{ user.first_name }} {{user.last_name }} ({{ recipes.total }})</h1>
+            <div class="row">
+                <div class="col">
+                    <h1 class="p-3 d-inline-block">Recipes by {{ user.first_name }} {{user.last_name }} ({{ recipes.total }})</h1>
+                    {% if current_user.id != user.id %}
+                        {% for follower in current_user.follower_id if follower in user.followee_id %}
+                            <a class="btn btn-danger btn-sm m-1" href="{{ url_for('social_feed.unfollow', followee_id=user.id, redirect_target='user', redirect_data=user.username) }}">Unfollow this user</a>
+                        {% else %}
+                            <a class="btn btn-secondary btn-sm m-1" href="{{ url_for('social_feed.follow', followee_id=user.id, redirect_target='user', redirect_data=user.username) }}">Follow this user</a>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
             <div class="container">
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
                     <!-- Recipe Album -->
