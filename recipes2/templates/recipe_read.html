@@ -54,9 +54,9 @@
                             </div>
                         {% else %}
                             {% for follower in current_user.follower_id if follower in recipe.user.followee_id %}
-                            <a class="btn btn-danger btn-sm m-1" href="{{ url_for('social_feed.unfollow', followee_id=recipe.user_id) }}">Unfollow this user</a>
+                            <a class="btn btn-danger btn-sm m-1" href="{{ url_for('social_feed.unfollow', followee_id=recipe.user_id, redirect_target='recipe', redirect_data=recipe.id) }}">Unfollow this user</a>
                             {% else %}
-                            <a class="btn btn-secondary btn-sm m-1" href="{{ url_for('social_feed.follow', followee_id=recipe.user_id) }}">Follow this user</a>
+                            <a class="btn btn-secondary btn-sm m-1" href="{{ url_for('social_feed.follow', followee_id=recipe.user_id, redirect_target='recipe', redirect_data=recipe.id) }}">Follow this user</a>
                             {% endfor %}
                         {% endif %}
                     {% else %}
