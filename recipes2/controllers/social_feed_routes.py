@@ -49,9 +49,10 @@ def social_feed():
                             )
 
 # Follow
-@social_feeds.route('/social_feed/follow/<int:followee_id><string:redirect_target>/<string:redirect_data>', methods=['GET', 'POST'])
+@social_feeds.route('/social_feed/follow/<int:followee_id>', methods=['GET', 'POST'])
+@social_feeds.route('/social_feed/follow/<int:followee_id>/<string:redirect_target>/<string:redirect_data>', methods=['GET', 'POST'])
 @login_required
-def follow(followee_id, redirect_target, redirect_data):
+def follow(followee_id, redirect_target=None, redirect_data=None):
 
     follower = Follower(follower_id=current_user.id, followee_id=followee_id)
     db.session.add(follower)
@@ -61,12 +62,13 @@ def follow(followee_id, redirect_target, redirect_data):
         return redirect(url_for('recipes.recipe', recipe_id=redirect_data))
     if redirect_target == "user":
         return redirect(url_for('users.user_recipes', username=redirect_data))
-    return redirect(url_for('main.home'))
+    return redirect(url_for('users.account'))
 
 # Unfollow
+@social_feeds.route('/social_feed/unfollow/<int:followee_id>', methods=['GET', 'POST'])
 @social_feeds.route('/social_feed/unfollow/<int:followee_id>/<string:redirect_target>/<string:redirect_data>', methods=['GET', 'POST'])
 @login_required
-def unfollow(followee_id, redirect_target, redirect_data):
+def unfollow(followee_id, redirect_target=None, redirect_data=None):
 
     to_delete = Follower.query.filter(Follower.followee_id==followee_id, Follower.follower_id == current_user.id).first()
     db.session.delete(to_delete)
