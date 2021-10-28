@@ -64,6 +64,7 @@ def update_recipe(recipe_id):
             form.description.data   = recipe.description
             form.prep_time.data     = recipe.prep_time
             form.cook_time.data     = recipe.cook_time
+            form.public.data        = recipe.public > 0
             form.ingredients.data   = recipe.ingredients
             form.instructions.data  = recipe.instructions
             form.notes.data         = recipe.notes
