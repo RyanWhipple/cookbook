@@ -10,9 +10,30 @@
         {{ form.hidden_tag() }}
         <fieldset class="form-group">
             <!-- First Row: Description and Image -->
-            <div class="row mb-3 gx-3 row-eq-height">
+            <div class="row mb-3 gx-3 row-eq-height flex-row-reverse">
+                <!-- Recipe Image -->
+                <div class="col-md-6 mb-3">
+                    <div class="border rounded-3 p-3 bg-light h-100">
+                        {% if recipe %}
+                            <img src="{{ url_for('static', filename='recipe_pics/' + recipe.image_file) }}" class="w-100" id="image">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='recipe_pics/default_food.png') }}" class="w-100" id="image">
+                        {% endif %}
+                
+                        <!-- Recipe Image -->
+                        <div class="form-group mt-3">
+                            <!-- {# form.picture.label(class="form-control-label") #}<br> -->
+                            {{ form.picture(class="form-control-file")}}
+                            {% if form.picture.errors %}
+                                {% for error in form.picture.errors %}
+                                    <span class="text-danger">{{ error }}</span><br>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
                 <!-- First Column: Metadata -->
-                <div class="col-6">
+                <div class="col-md-6 mb-3">
                     <div class="border rounded-3 p-3 bg-light h-100">
                         <!-- Recipe Name -->
                         <div class="form-group mb-2">
@@ -120,32 +141,11 @@
                         </label>
                     </div>
                 </div>
-                <!-- Recipe Image -->
-                <div class="col-6">
-                    <div class="border rounded-3 p-3 bg-light h-100">
-                        {% if recipe %}
-                            <img src="{{ url_for('static', filename='recipe_pics/' + recipe.image_file) }}" class="w-100" id="image">
-                        {% else %}
-                            <img src="{{ url_for('static', filename='recipe_pics/default_food.png') }}" class="w-100" id="image">
-                        {% endif %}
-
-                        <!-- Recipe Image -->
-                        <div class="form-group mt-3">
-                            <!-- {# form.picture.label(class="form-control-label") #}<br> -->
-                            {{ form.picture(class="form-control-file")}}
-                            {% if form.picture.errors %}
-                                {% for error in form.picture.errors %}
-                                    <span class="text-danger">{{ error }}</span><br>
-                                {% endfor %}
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
             </div>
             <!-- Second Row: Ingredients and Instructions -->
-            <div class="row mb-3 gx-3 row-eq-height">
+            <div class="row gx-3 row-eq-height">
                 <!-- Ingredients -->
-                <div class="col col-3">
+                <div class="col-md-4 mb-3">
                     <div class="border rounded-3 p-3 bg-light h-100">
                         <h2>Ingredients</h2>
                         <hr>
@@ -166,7 +166,7 @@
                     </div>
                 </div>
                 <!-- Instructions -->
-                <div class="col col-9">
+                <div class="col-md-8 mb-3">
                     <div class="border rounded-3 p-3 bg-light h-100">
                         <h2>Instructions</h2>
                         <hr>
